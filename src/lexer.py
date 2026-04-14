@@ -20,7 +20,10 @@ tokens = (
     'CIERRE_FINAL',   # ;
     'VALLA',          # ,
     'NOT_EQUAL',      # !=
-   
+    'IGUAL',          # == (comparación)
+    'Y',              # AND lógico
+    'O',              # OR lógico
+    'NO',             # NOT lógico
 )
 
 # Palabras reservadas
@@ -65,6 +68,11 @@ t_VALLA = r','
 t_NOT_EQUAL = r'!='
 t_MENOR = r'<'
 t_MAYOR = r'>'
+t_IGUAL = r'=='
+t_MAYOR = r'>'
+t_MENOR = r'<'
+t_MAYOR_O_IGUAL = r'>='
+t_MENOR_O_IGUAL = r'<='
 t_MENOR_O_IGUAL = r'<='
 t_MAYOR_O_IGUAL = r'>='
 
