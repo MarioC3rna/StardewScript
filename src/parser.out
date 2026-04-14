@@ -3,16 +3,8 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     ENTREGAR
-    EQUAL
-    NOT_EQUAL
-    O
     PLANTAR
-    PUERTA_CLOSE
-    PUERTA_OPEN
     RECETA
-    STRING
-    VALLA
-    Y
 
 Grammar
 
@@ -27,61 +19,64 @@ Rule 7     instruccion -> bucle_mientras
 Rule 8     instruccion -> bucle_dia
 Rule 9     declaracion -> SEMILLA ID UBICAR expresion CIERRE_FINAL
 Rule 10    mostrar -> MOSTRAR expresion CIERRE_FINAL
-Rule 11    expresion -> expresion MAYOR expresion
-Rule 12    expresion -> expresion MENOR expresion
-Rule 13    expresion -> expresion MAYOR_O_IGUAL expresion
-Rule 14    expresion -> expresion MENOR_O_IGUAL expresion
-Rule 15    expresion -> termino
-Rule 16    expresion -> expresion PLUS termino
-Rule 17    expresion -> expresion MINUS termino
-Rule 18    termino -> factor
-Rule 19    termino -> termino MUL factor
-Rule 20    termino -> termino DIV factor
-Rule 21    factor -> NUM
-Rule 22    factor -> ID
-Rule 23    factor -> CORRAL_OPEN expresion CORRAL_CLOSE
-Rule 24    condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA
-Rule 25    condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-Rule 26    bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE
-Rule 27    bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+Rule 11    condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA
+Rule 12    condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+Rule 13    bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE
+Rule 14    bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+Rule 15    expresion -> expresion O expresion_y
+Rule 16    expresion -> expresion_y
+Rule 17    expresion_y -> expresion_y Y expresion_comp
+Rule 18    expresion_y -> expresion_comp
+Rule 19    expresion_comp -> expresion_arit MAYOR expresion_arit
+Rule 20    expresion_comp -> expresion_arit MENOR expresion_arit
+Rule 21    expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit
+Rule 22    expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit
+Rule 23    expresion_comp -> expresion_arit IGUAL expresion_arit
+Rule 24    expresion_comp -> expresion_arit
+Rule 25    expresion_arit -> expresion_arit PLUS expresion_mult
+Rule 26    expresion_arit -> expresion_arit MINUS expresion_mult
+Rule 27    expresion_arit -> expresion_mult
+Rule 28    expresion_mult -> expresion_mult MUL factor
+Rule 29    expresion_mult -> expresion_mult DIV factor
+Rule 30    expresion_mult -> factor
+Rule 31    factor -> NUM
+Rule 32    factor -> ID
+Rule 33    factor -> STRING
+Rule 34    factor -> CORRAL_OPEN expresion CORRAL_CLOSE
 
 Terminals, with rules where they appear
 
-CIERRE               : 1 26 27
+CIERRE               : 1 13 14
 CIERRE_FINAL         : 9 10
-CORRAL_CLOSE         : 23
-CORRAL_OPEN          : 23
-COSECHA              : 24 25
-DIA                  : 27
-DIV                  : 20
-ENTONCES             : 24 25
+CORRAL_CLOSE         : 34
+CORRAL_OPEN          : 34
+COSECHA              : 11 12
+DIA                  : 14
+DIV                  : 29
+ENTONCES             : 11 12
 ENTREGAR             : 
-EQUAL                : 
 GRANJA               : 1
-ID                   : 9 22 27
-INVERNADERO          : 26 27
-MAYOR                : 11
-MAYOR_O_IGUAL        : 13
-MENOR                : 12
-MENOR_O_IGUAL        : 14
-MIENTRAS             : 26
-MINUS                : 17
+ID                   : 9 14 32
+IGUAL                : 23
+INVERNADERO          : 13 14
+MAYOR                : 19
+MAYOR_O_IGUAL        : 21
+MENOR                : 20
+MENOR_O_IGUAL        : 22
+MIENTRAS             : 13
+MINUS                : 26
 MOSTRAR              : 10
-MUL                  : 19
-NOT_EQUAL            : 
-NUM                  : 21 27
-O                    : 
+MUL                  : 28
+NUM                  : 14 31
+O                    : 15
 PLANTAR              : 
-PLUS                 : 16
-PUERTA_CLOSE         : 
-PUERTA_OPEN          : 
+PLUS                 : 25
 RECETA               : 
 SEMILLA              : 9
-SIEMBRA              : 24 25
-STRING               : 
-UBICAR               : 9 27
-VALLA                : 
-Y                    : 
+SIEMBRA              : 11 12
+STRING               : 33
+UBICAR               : 9 14
+Y                    : 17
 error                : 
 
 Nonterminals, with rules where they appear
@@ -90,13 +85,16 @@ bucle_dia            : 8
 bucle_mientras       : 7
 condicional          : 6
 declaracion          : 4
-expresion            : 9 10 11 11 12 12 13 13 14 14 16 17 23 24 25 26
-factor               : 18 19 20
+expresion            : 9 10 11 12 13 15 34
+expresion_arit       : 19 19 20 20 21 21 22 22 23 23 24 25 26
+expresion_comp       : 17 18
+expresion_mult       : 25 26 27 28 29
+expresion_y          : 15 16 17
+factor               : 28 29 30
 instruccion          : 2 3
-instrucciones        : 1 3 24 25 25 26 27
+instrucciones        : 1 3 11 12 12 13 14
 mostrar              : 5
 programa             : 0
-termino              : 15 16 17 19 20
 
 Parsing method: LALR
 
@@ -127,10 +125,10 @@ state 2
     (8) instruccion -> . bucle_dia
     (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
     (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
     SEMILLA         shift and go to state 10
     MOSTRAR         shift and go to state 11
@@ -157,10 +155,10 @@ state 3
     (8) instruccion -> . bucle_dia
     (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
     (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
     CIERRE          shift and go to state 15
     SEMILLA         shift and go to state 10
@@ -264,84 +262,117 @@ state 10
 state 11
 
     (10) mostrar -> MOSTRAR . expresion CIERRE_FINAL
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (15) expresion -> . expresion O expresion_y
+    (16) expresion -> . expresion_y
+    (17) expresion_y -> . expresion_y Y expresion_comp
+    (18) expresion_y -> . expresion_comp
+    (19) expresion_comp -> . expresion_arit MAYOR expresion_arit
+    (20) expresion_comp -> . expresion_arit MENOR expresion_arit
+    (21) expresion_comp -> . expresion_arit MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> . expresion_arit MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> . expresion_arit IGUAL expresion_arit
+    (24) expresion_comp -> . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
     expresion                      shift and go to state 18
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
+    expresion_y                    shift and go to state 19
+    expresion_comp                 shift and go to state 20
+    expresion_arit                 shift and go to state 21
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 12
 
-    (24) condicional -> SIEMBRA . expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> SIEMBRA . expresion ENTONCES instrucciones COSECHA instrucciones
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (11) condicional -> SIEMBRA . expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> SIEMBRA . expresion ENTONCES instrucciones COSECHA instrucciones
+    (15) expresion -> . expresion O expresion_y
+    (16) expresion -> . expresion_y
+    (17) expresion_y -> . expresion_y Y expresion_comp
+    (18) expresion_y -> . expresion_comp
+    (19) expresion_comp -> . expresion_arit MAYOR expresion_arit
+    (20) expresion_comp -> . expresion_arit MENOR expresion_arit
+    (21) expresion_comp -> . expresion_arit MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> . expresion_arit MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> . expresion_arit IGUAL expresion_arit
+    (24) expresion_comp -> . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    expresion                      shift and go to state 24
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
+    expresion                      shift and go to state 28
+    expresion_y                    shift and go to state 19
+    expresion_comp                 shift and go to state 20
+    expresion_arit                 shift and go to state 21
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 13
 
-    (26) bucle_mientras -> MIENTRAS . expresion INVERNADERO instrucciones CIERRE
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (13) bucle_mientras -> MIENTRAS . expresion INVERNADERO instrucciones CIERRE
+    (15) expresion -> . expresion O expresion_y
+    (16) expresion -> . expresion_y
+    (17) expresion_y -> . expresion_y Y expresion_comp
+    (18) expresion_y -> . expresion_comp
+    (19) expresion_comp -> . expresion_arit MAYOR expresion_arit
+    (20) expresion_comp -> . expresion_arit MENOR expresion_arit
+    (21) expresion_comp -> . expresion_arit MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> . expresion_arit MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> . expresion_arit IGUAL expresion_arit
+    (24) expresion_comp -> . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    expresion                      shift and go to state 25
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
+    expresion                      shift and go to state 29
+    expresion_y                    shift and go to state 19
+    expresion_comp                 shift and go to state 20
+    expresion_arit                 shift and go to state 21
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 14
 
-    (27) bucle_dia -> DIA . ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> DIA . ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
-    ID              shift and go to state 26
+    ID              shift and go to state 30
 
 
 state 15
@@ -368,199 +399,275 @@ state 17
 
     (9) declaracion -> SEMILLA ID . UBICAR expresion CIERRE_FINAL
 
-    UBICAR          shift and go to state 27
+    UBICAR          shift and go to state 31
 
 
 state 18
 
     (10) mostrar -> MOSTRAR expresion . CIERRE_FINAL
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (15) expresion -> expresion . O expresion_y
 
-    CIERRE_FINAL    shift and go to state 28
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    CIERRE_FINAL    shift and go to state 32
+    O               shift and go to state 33
 
 
 state 19
 
-    (15) expresion -> termino .
-    (19) termino -> termino . MUL factor
-    (20) termino -> termino . DIV factor
+    (16) expresion -> expresion_y .
+    (17) expresion_y -> expresion_y . Y expresion_comp
 
-    CIERRE_FINAL    reduce using rule 15 (expresion -> termino .)
-    MAYOR           reduce using rule 15 (expresion -> termino .)
-    MENOR           reduce using rule 15 (expresion -> termino .)
-    MAYOR_O_IGUAL   reduce using rule 15 (expresion -> termino .)
-    MENOR_O_IGUAL   reduce using rule 15 (expresion -> termino .)
-    PLUS            reduce using rule 15 (expresion -> termino .)
-    MINUS           reduce using rule 15 (expresion -> termino .)
-    ENTONCES        reduce using rule 15 (expresion -> termino .)
-    INVERNADERO     reduce using rule 15 (expresion -> termino .)
-    CORRAL_CLOSE    reduce using rule 15 (expresion -> termino .)
-    MUL             shift and go to state 35
-    DIV             shift and go to state 36
+    CIERRE_FINAL    reduce using rule 16 (expresion -> expresion_y .)
+    O               reduce using rule 16 (expresion -> expresion_y .)
+    ENTONCES        reduce using rule 16 (expresion -> expresion_y .)
+    INVERNADERO     reduce using rule 16 (expresion -> expresion_y .)
+    CORRAL_CLOSE    reduce using rule 16 (expresion -> expresion_y .)
+    Y               shift and go to state 34
 
 
 state 20
 
-    (18) termino -> factor .
+    (18) expresion_y -> expresion_comp .
 
-    MUL             reduce using rule 18 (termino -> factor .)
-    DIV             reduce using rule 18 (termino -> factor .)
-    CIERRE_FINAL    reduce using rule 18 (termino -> factor .)
-    MAYOR           reduce using rule 18 (termino -> factor .)
-    MENOR           reduce using rule 18 (termino -> factor .)
-    MAYOR_O_IGUAL   reduce using rule 18 (termino -> factor .)
-    MENOR_O_IGUAL   reduce using rule 18 (termino -> factor .)
-    PLUS            reduce using rule 18 (termino -> factor .)
-    MINUS           reduce using rule 18 (termino -> factor .)
-    ENTONCES        reduce using rule 18 (termino -> factor .)
-    INVERNADERO     reduce using rule 18 (termino -> factor .)
-    CORRAL_CLOSE    reduce using rule 18 (termino -> factor .)
+    Y               reduce using rule 18 (expresion_y -> expresion_comp .)
+    CIERRE_FINAL    reduce using rule 18 (expresion_y -> expresion_comp .)
+    O               reduce using rule 18 (expresion_y -> expresion_comp .)
+    ENTONCES        reduce using rule 18 (expresion_y -> expresion_comp .)
+    INVERNADERO     reduce using rule 18 (expresion_y -> expresion_comp .)
+    CORRAL_CLOSE    reduce using rule 18 (expresion_y -> expresion_comp .)
 
 
 state 21
 
-    (21) factor -> NUM .
+    (19) expresion_comp -> expresion_arit . MAYOR expresion_arit
+    (20) expresion_comp -> expresion_arit . MENOR expresion_arit
+    (21) expresion_comp -> expresion_arit . MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> expresion_arit . MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> expresion_arit . IGUAL expresion_arit
+    (24) expresion_comp -> expresion_arit .
+    (25) expresion_arit -> expresion_arit . PLUS expresion_mult
+    (26) expresion_arit -> expresion_arit . MINUS expresion_mult
 
-    MUL             reduce using rule 21 (factor -> NUM .)
-    DIV             reduce using rule 21 (factor -> NUM .)
-    CIERRE_FINAL    reduce using rule 21 (factor -> NUM .)
-    MAYOR           reduce using rule 21 (factor -> NUM .)
-    MENOR           reduce using rule 21 (factor -> NUM .)
-    MAYOR_O_IGUAL   reduce using rule 21 (factor -> NUM .)
-    MENOR_O_IGUAL   reduce using rule 21 (factor -> NUM .)
-    PLUS            reduce using rule 21 (factor -> NUM .)
-    MINUS           reduce using rule 21 (factor -> NUM .)
-    ENTONCES        reduce using rule 21 (factor -> NUM .)
-    INVERNADERO     reduce using rule 21 (factor -> NUM .)
-    CORRAL_CLOSE    reduce using rule 21 (factor -> NUM .)
+    MAYOR           shift and go to state 35
+    MENOR           shift and go to state 36
+    MAYOR_O_IGUAL   shift and go to state 37
+    MENOR_O_IGUAL   shift and go to state 38
+    IGUAL           shift and go to state 39
+    Y               reduce using rule 24 (expresion_comp -> expresion_arit .)
+    CIERRE_FINAL    reduce using rule 24 (expresion_comp -> expresion_arit .)
+    O               reduce using rule 24 (expresion_comp -> expresion_arit .)
+    ENTONCES        reduce using rule 24 (expresion_comp -> expresion_arit .)
+    INVERNADERO     reduce using rule 24 (expresion_comp -> expresion_arit .)
+    CORRAL_CLOSE    reduce using rule 24 (expresion_comp -> expresion_arit .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
 
 
 state 22
 
-    (22) factor -> ID .
+    (27) expresion_arit -> expresion_mult .
+    (28) expresion_mult -> expresion_mult . MUL factor
+    (29) expresion_mult -> expresion_mult . DIV factor
 
-    MUL             reduce using rule 22 (factor -> ID .)
-    DIV             reduce using rule 22 (factor -> ID .)
-    CIERRE_FINAL    reduce using rule 22 (factor -> ID .)
-    MAYOR           reduce using rule 22 (factor -> ID .)
-    MENOR           reduce using rule 22 (factor -> ID .)
-    MAYOR_O_IGUAL   reduce using rule 22 (factor -> ID .)
-    MENOR_O_IGUAL   reduce using rule 22 (factor -> ID .)
-    PLUS            reduce using rule 22 (factor -> ID .)
-    MINUS           reduce using rule 22 (factor -> ID .)
-    ENTONCES        reduce using rule 22 (factor -> ID .)
-    INVERNADERO     reduce using rule 22 (factor -> ID .)
-    CORRAL_CLOSE    reduce using rule 22 (factor -> ID .)
+    MAYOR           reduce using rule 27 (expresion_arit -> expresion_mult .)
+    MENOR           reduce using rule 27 (expresion_arit -> expresion_mult .)
+    MAYOR_O_IGUAL   reduce using rule 27 (expresion_arit -> expresion_mult .)
+    MENOR_O_IGUAL   reduce using rule 27 (expresion_arit -> expresion_mult .)
+    IGUAL           reduce using rule 27 (expresion_arit -> expresion_mult .)
+    PLUS            reduce using rule 27 (expresion_arit -> expresion_mult .)
+    MINUS           reduce using rule 27 (expresion_arit -> expresion_mult .)
+    Y               reduce using rule 27 (expresion_arit -> expresion_mult .)
+    CIERRE_FINAL    reduce using rule 27 (expresion_arit -> expresion_mult .)
+    O               reduce using rule 27 (expresion_arit -> expresion_mult .)
+    ENTONCES        reduce using rule 27 (expresion_arit -> expresion_mult .)
+    INVERNADERO     reduce using rule 27 (expresion_arit -> expresion_mult .)
+    CORRAL_CLOSE    reduce using rule 27 (expresion_arit -> expresion_mult .)
+    MUL             shift and go to state 42
+    DIV             shift and go to state 43
 
 
 state 23
 
-    (23) factor -> CORRAL_OPEN . expresion CORRAL_CLOSE
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (30) expresion_mult -> factor .
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    MUL             reduce using rule 30 (expresion_mult -> factor .)
+    DIV             reduce using rule 30 (expresion_mult -> factor .)
+    MAYOR           reduce using rule 30 (expresion_mult -> factor .)
+    MENOR           reduce using rule 30 (expresion_mult -> factor .)
+    MAYOR_O_IGUAL   reduce using rule 30 (expresion_mult -> factor .)
+    MENOR_O_IGUAL   reduce using rule 30 (expresion_mult -> factor .)
+    IGUAL           reduce using rule 30 (expresion_mult -> factor .)
+    PLUS            reduce using rule 30 (expresion_mult -> factor .)
+    MINUS           reduce using rule 30 (expresion_mult -> factor .)
+    Y               reduce using rule 30 (expresion_mult -> factor .)
+    CIERRE_FINAL    reduce using rule 30 (expresion_mult -> factor .)
+    O               reduce using rule 30 (expresion_mult -> factor .)
+    ENTONCES        reduce using rule 30 (expresion_mult -> factor .)
+    INVERNADERO     reduce using rule 30 (expresion_mult -> factor .)
+    CORRAL_CLOSE    reduce using rule 30 (expresion_mult -> factor .)
 
-    expresion                      shift and go to state 37
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
 
 state 24
 
-    (24) condicional -> SIEMBRA expresion . ENTONCES instrucciones COSECHA
-    (25) condicional -> SIEMBRA expresion . ENTONCES instrucciones COSECHA instrucciones
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (31) factor -> NUM .
 
-    ENTONCES        shift and go to state 38
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    MUL             reduce using rule 31 (factor -> NUM .)
+    DIV             reduce using rule 31 (factor -> NUM .)
+    MAYOR           reduce using rule 31 (factor -> NUM .)
+    MENOR           reduce using rule 31 (factor -> NUM .)
+    MAYOR_O_IGUAL   reduce using rule 31 (factor -> NUM .)
+    MENOR_O_IGUAL   reduce using rule 31 (factor -> NUM .)
+    IGUAL           reduce using rule 31 (factor -> NUM .)
+    PLUS            reduce using rule 31 (factor -> NUM .)
+    MINUS           reduce using rule 31 (factor -> NUM .)
+    Y               reduce using rule 31 (factor -> NUM .)
+    CIERRE_FINAL    reduce using rule 31 (factor -> NUM .)
+    O               reduce using rule 31 (factor -> NUM .)
+    ENTONCES        reduce using rule 31 (factor -> NUM .)
+    INVERNADERO     reduce using rule 31 (factor -> NUM .)
+    CORRAL_CLOSE    reduce using rule 31 (factor -> NUM .)
 
 
 state 25
 
-    (26) bucle_mientras -> MIENTRAS expresion . INVERNADERO instrucciones CIERRE
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (32) factor -> ID .
 
-    INVERNADERO     shift and go to state 39
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    MUL             reduce using rule 32 (factor -> ID .)
+    DIV             reduce using rule 32 (factor -> ID .)
+    MAYOR           reduce using rule 32 (factor -> ID .)
+    MENOR           reduce using rule 32 (factor -> ID .)
+    MAYOR_O_IGUAL   reduce using rule 32 (factor -> ID .)
+    MENOR_O_IGUAL   reduce using rule 32 (factor -> ID .)
+    IGUAL           reduce using rule 32 (factor -> ID .)
+    PLUS            reduce using rule 32 (factor -> ID .)
+    MINUS           reduce using rule 32 (factor -> ID .)
+    Y               reduce using rule 32 (factor -> ID .)
+    CIERRE_FINAL    reduce using rule 32 (factor -> ID .)
+    O               reduce using rule 32 (factor -> ID .)
+    ENTONCES        reduce using rule 32 (factor -> ID .)
+    INVERNADERO     reduce using rule 32 (factor -> ID .)
+    CORRAL_CLOSE    reduce using rule 32 (factor -> ID .)
 
 
 state 26
 
-    (27) bucle_dia -> DIA ID . UBICAR NUM INVERNADERO instrucciones CIERRE
+    (33) factor -> STRING .
 
-    UBICAR          shift and go to state 40
+    MUL             reduce using rule 33 (factor -> STRING .)
+    DIV             reduce using rule 33 (factor -> STRING .)
+    MAYOR           reduce using rule 33 (factor -> STRING .)
+    MENOR           reduce using rule 33 (factor -> STRING .)
+    MAYOR_O_IGUAL   reduce using rule 33 (factor -> STRING .)
+    MENOR_O_IGUAL   reduce using rule 33 (factor -> STRING .)
+    IGUAL           reduce using rule 33 (factor -> STRING .)
+    PLUS            reduce using rule 33 (factor -> STRING .)
+    MINUS           reduce using rule 33 (factor -> STRING .)
+    Y               reduce using rule 33 (factor -> STRING .)
+    CIERRE_FINAL    reduce using rule 33 (factor -> STRING .)
+    O               reduce using rule 33 (factor -> STRING .)
+    ENTONCES        reduce using rule 33 (factor -> STRING .)
+    INVERNADERO     reduce using rule 33 (factor -> STRING .)
+    CORRAL_CLOSE    reduce using rule 33 (factor -> STRING .)
 
 
 state 27
 
-    (9) declaracion -> SEMILLA ID UBICAR . expresion CIERRE_FINAL
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (34) factor -> CORRAL_OPEN . expresion CORRAL_CLOSE
+    (15) expresion -> . expresion O expresion_y
+    (16) expresion -> . expresion_y
+    (17) expresion_y -> . expresion_y Y expresion_comp
+    (18) expresion_y -> . expresion_comp
+    (19) expresion_comp -> . expresion_arit MAYOR expresion_arit
+    (20) expresion_comp -> . expresion_arit MENOR expresion_arit
+    (21) expresion_comp -> . expresion_arit MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> . expresion_arit MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> . expresion_arit IGUAL expresion_arit
+    (24) expresion_comp -> . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    expresion                      shift and go to state 41
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
+    expresion                      shift and go to state 44
+    expresion_y                    shift and go to state 19
+    expresion_comp                 shift and go to state 20
+    expresion_arit                 shift and go to state 21
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 28
+
+    (11) condicional -> SIEMBRA expresion . ENTONCES instrucciones COSECHA
+    (12) condicional -> SIEMBRA expresion . ENTONCES instrucciones COSECHA instrucciones
+    (15) expresion -> expresion . O expresion_y
+
+    ENTONCES        shift and go to state 45
+    O               shift and go to state 33
+
+
+state 29
+
+    (13) bucle_mientras -> MIENTRAS expresion . INVERNADERO instrucciones CIERRE
+    (15) expresion -> expresion . O expresion_y
+
+    INVERNADERO     shift and go to state 46
+    O               shift and go to state 33
+
+
+state 30
+
+    (14) bucle_dia -> DIA ID . UBICAR NUM INVERNADERO instrucciones CIERRE
+
+    UBICAR          shift and go to state 47
+
+
+state 31
+
+    (9) declaracion -> SEMILLA ID UBICAR . expresion CIERRE_FINAL
+    (15) expresion -> . expresion O expresion_y
+    (16) expresion -> . expresion_y
+    (17) expresion_y -> . expresion_y Y expresion_comp
+    (18) expresion_y -> . expresion_comp
+    (19) expresion_comp -> . expresion_arit MAYOR expresion_arit
+    (20) expresion_comp -> . expresion_arit MENOR expresion_arit
+    (21) expresion_comp -> . expresion_arit MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> . expresion_arit MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> . expresion_arit IGUAL expresion_arit
+    (24) expresion_comp -> . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
+
+    expresion                      shift and go to state 48
+    expresion_y                    shift and go to state 19
+    expresion_comp                 shift and go to state 20
+    expresion_arit                 shift and go to state 21
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
+
+state 32
 
     (10) mostrar -> MOSTRAR expresion CIERRE_FINAL .
 
@@ -573,542 +680,558 @@ state 28
     COSECHA         reduce using rule 10 (mostrar -> MOSTRAR expresion CIERRE_FINAL .)
 
 
-state 29
-
-    (11) expresion -> expresion MAYOR . expresion
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
-
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
-
-    expresion                      shift and go to state 42
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
-
-state 30
-
-    (12) expresion -> expresion MENOR . expresion
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
-
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
-
-    expresion                      shift and go to state 43
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
-
-state 31
-
-    (13) expresion -> expresion MAYOR_O_IGUAL . expresion
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
-
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
-
-    expresion                      shift and go to state 44
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
-
-state 32
-
-    (14) expresion -> expresion MENOR_O_IGUAL . expresion
-    (11) expresion -> . expresion MAYOR expresion
-    (12) expresion -> . expresion MENOR expresion
-    (13) expresion -> . expresion MAYOR_O_IGUAL expresion
-    (14) expresion -> . expresion MENOR_O_IGUAL expresion
-    (15) expresion -> . termino
-    (16) expresion -> . expresion PLUS termino
-    (17) expresion -> . expresion MINUS termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
-
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
-
-    expresion                      shift and go to state 45
-    termino                        shift and go to state 19
-    factor                         shift and go to state 20
-
 state 33
 
-    (16) expresion -> expresion PLUS . termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (15) expresion -> expresion O . expresion_y
+    (17) expresion_y -> . expresion_y Y expresion_comp
+    (18) expresion_y -> . expresion_comp
+    (19) expresion_comp -> . expresion_arit MAYOR expresion_arit
+    (20) expresion_comp -> . expresion_arit MENOR expresion_arit
+    (21) expresion_comp -> . expresion_arit MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> . expresion_arit MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> . expresion_arit IGUAL expresion_arit
+    (24) expresion_comp -> . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    termino                        shift and go to state 46
-    factor                         shift and go to state 20
+    expresion_y                    shift and go to state 49
+    expresion_comp                 shift and go to state 20
+    expresion_arit                 shift and go to state 21
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 34
 
-    (17) expresion -> expresion MINUS . termino
-    (18) termino -> . factor
-    (19) termino -> . termino MUL factor
-    (20) termino -> . termino DIV factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (17) expresion_y -> expresion_y Y . expresion_comp
+    (19) expresion_comp -> . expresion_arit MAYOR expresion_arit
+    (20) expresion_comp -> . expresion_arit MENOR expresion_arit
+    (21) expresion_comp -> . expresion_arit MAYOR_O_IGUAL expresion_arit
+    (22) expresion_comp -> . expresion_arit MENOR_O_IGUAL expresion_arit
+    (23) expresion_comp -> . expresion_arit IGUAL expresion_arit
+    (24) expresion_comp -> . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    termino                        shift and go to state 47
-    factor                         shift and go to state 20
+    expresion_comp                 shift and go to state 50
+    expresion_arit                 shift and go to state 21
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 35
 
-    (19) termino -> termino MUL . factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (19) expresion_comp -> expresion_arit MAYOR . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    factor                         shift and go to state 48
+    expresion_arit                 shift and go to state 51
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 36
 
-    (20) termino -> termino DIV . factor
-    (21) factor -> . NUM
-    (22) factor -> . ID
-    (23) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
+    (20) expresion_comp -> expresion_arit MENOR . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 21
-    ID              shift and go to state 22
-    CORRAL_OPEN     shift and go to state 23
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    factor                         shift and go to state 49
+    expresion_arit                 shift and go to state 52
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 37
 
-    (23) factor -> CORRAL_OPEN expresion . CORRAL_CLOSE
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (21) expresion_comp -> expresion_arit MAYOR_O_IGUAL . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    CORRAL_CLOSE    shift and go to state 50
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
+    expresion_arit                 shift and go to state 53
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 38
 
-    (24) condicional -> SIEMBRA expresion ENTONCES . instrucciones COSECHA
-    (25) condicional -> SIEMBRA expresion ENTONCES . instrucciones COSECHA instrucciones
-    (2) instrucciones -> . instruccion
-    (3) instrucciones -> . instrucciones instruccion
-    (4) instruccion -> . declaracion
-    (5) instruccion -> . mostrar
-    (6) instruccion -> . condicional
-    (7) instruccion -> . bucle_mientras
-    (8) instruccion -> . bucle_dia
-    (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
-    (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (22) expresion_comp -> expresion_arit MENOR_O_IGUAL . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    SEMILLA         shift and go to state 10
-    MOSTRAR         shift and go to state 11
-    SIEMBRA         shift and go to state 12
-    MIENTRAS        shift and go to state 13
-    DIA             shift and go to state 14
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    instrucciones                  shift and go to state 51
-    instruccion                    shift and go to state 4
-    declaracion                    shift and go to state 5
-    mostrar                        shift and go to state 6
-    condicional                    shift and go to state 7
-    bucle_mientras                 shift and go to state 8
-    bucle_dia                      shift and go to state 9
+    expresion_arit                 shift and go to state 54
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 39
 
-    (26) bucle_mientras -> MIENTRAS expresion INVERNADERO . instrucciones CIERRE
-    (2) instrucciones -> . instruccion
-    (3) instrucciones -> . instrucciones instruccion
-    (4) instruccion -> . declaracion
-    (5) instruccion -> . mostrar
-    (6) instruccion -> . condicional
-    (7) instruccion -> . bucle_mientras
-    (8) instruccion -> . bucle_dia
-    (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
-    (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (23) expresion_comp -> expresion_arit IGUAL . expresion_arit
+    (25) expresion_arit -> . expresion_arit PLUS expresion_mult
+    (26) expresion_arit -> . expresion_arit MINUS expresion_mult
+    (27) expresion_arit -> . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    SEMILLA         shift and go to state 10
-    MOSTRAR         shift and go to state 11
-    SIEMBRA         shift and go to state 12
-    MIENTRAS        shift and go to state 13
-    DIA             shift and go to state 14
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-    instrucciones                  shift and go to state 52
-    instruccion                    shift and go to state 4
-    declaracion                    shift and go to state 5
-    mostrar                        shift and go to state 6
-    condicional                    shift and go to state 7
-    bucle_mientras                 shift and go to state 8
-    bucle_dia                      shift and go to state 9
+    expresion_arit                 shift and go to state 55
+    expresion_mult                 shift and go to state 22
+    factor                         shift and go to state 23
 
 state 40
 
-    (27) bucle_dia -> DIA ID UBICAR . NUM INVERNADERO instrucciones CIERRE
+    (25) expresion_arit -> expresion_arit PLUS . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    NUM             shift and go to state 53
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
+    expresion_mult                 shift and go to state 56
+    factor                         shift and go to state 23
 
 state 41
 
-    (9) declaracion -> SEMILLA ID UBICAR expresion . CIERRE_FINAL
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (26) expresion_arit -> expresion_arit MINUS . expresion_mult
+    (28) expresion_mult -> . expresion_mult MUL factor
+    (29) expresion_mult -> . expresion_mult DIV factor
+    (30) expresion_mult -> . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-    CIERRE_FINAL    shift and go to state 54
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
+    expresion_mult                 shift and go to state 57
+    factor                         shift and go to state 23
 
 state 42
 
-    (11) expresion -> expresion MAYOR expresion .
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (28) expresion_mult -> expresion_mult MUL . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-  ! shift/reduce conflict for MAYOR resolved as shift
-  ! shift/reduce conflict for MENOR resolved as shift
-  ! shift/reduce conflict for MAYOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for MENOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-    CIERRE_FINAL    reduce using rule 11 (expresion -> expresion MAYOR expresion .)
-    ENTONCES        reduce using rule 11 (expresion -> expresion MAYOR expresion .)
-    INVERNADERO     reduce using rule 11 (expresion -> expresion MAYOR expresion .)
-    CORRAL_CLOSE    reduce using rule 11 (expresion -> expresion MAYOR expresion .)
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-  ! MAYOR           [ reduce using rule 11 (expresion -> expresion MAYOR expresion .) ]
-  ! MENOR           [ reduce using rule 11 (expresion -> expresion MAYOR expresion .) ]
-  ! MAYOR_O_IGUAL   [ reduce using rule 11 (expresion -> expresion MAYOR expresion .) ]
-  ! MENOR_O_IGUAL   [ reduce using rule 11 (expresion -> expresion MAYOR expresion .) ]
-  ! PLUS            [ reduce using rule 11 (expresion -> expresion MAYOR expresion .) ]
-  ! MINUS           [ reduce using rule 11 (expresion -> expresion MAYOR expresion .) ]
-
+    factor                         shift and go to state 58
 
 state 43
 
-    (12) expresion -> expresion MENOR expresion .
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (29) expresion_mult -> expresion_mult DIV . factor
+    (31) factor -> . NUM
+    (32) factor -> . ID
+    (33) factor -> . STRING
+    (34) factor -> . CORRAL_OPEN expresion CORRAL_CLOSE
 
-  ! shift/reduce conflict for MAYOR resolved as shift
-  ! shift/reduce conflict for MENOR resolved as shift
-  ! shift/reduce conflict for MAYOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for MENOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-    CIERRE_FINAL    reduce using rule 12 (expresion -> expresion MENOR expresion .)
-    ENTONCES        reduce using rule 12 (expresion -> expresion MENOR expresion .)
-    INVERNADERO     reduce using rule 12 (expresion -> expresion MENOR expresion .)
-    CORRAL_CLOSE    reduce using rule 12 (expresion -> expresion MENOR expresion .)
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    NUM             shift and go to state 24
+    ID              shift and go to state 25
+    STRING          shift and go to state 26
+    CORRAL_OPEN     shift and go to state 27
 
-  ! MAYOR           [ reduce using rule 12 (expresion -> expresion MENOR expresion .) ]
-  ! MENOR           [ reduce using rule 12 (expresion -> expresion MENOR expresion .) ]
-  ! MAYOR_O_IGUAL   [ reduce using rule 12 (expresion -> expresion MENOR expresion .) ]
-  ! MENOR_O_IGUAL   [ reduce using rule 12 (expresion -> expresion MENOR expresion .) ]
-  ! PLUS            [ reduce using rule 12 (expresion -> expresion MENOR expresion .) ]
-  ! MINUS           [ reduce using rule 12 (expresion -> expresion MENOR expresion .) ]
-
+    factor                         shift and go to state 59
 
 state 44
 
-    (13) expresion -> expresion MAYOR_O_IGUAL expresion .
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (34) factor -> CORRAL_OPEN expresion . CORRAL_CLOSE
+    (15) expresion -> expresion . O expresion_y
 
-  ! shift/reduce conflict for MAYOR resolved as shift
-  ! shift/reduce conflict for MENOR resolved as shift
-  ! shift/reduce conflict for MAYOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for MENOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-    CIERRE_FINAL    reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .)
-    ENTONCES        reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .)
-    INVERNADERO     reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .)
-    CORRAL_CLOSE    reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .)
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
-
-  ! MAYOR           [ reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .) ]
-  ! MENOR           [ reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .) ]
-  ! MAYOR_O_IGUAL   [ reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .) ]
-  ! MENOR_O_IGUAL   [ reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .) ]
-  ! PLUS            [ reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .) ]
-  ! MINUS           [ reduce using rule 13 (expresion -> expresion MAYOR_O_IGUAL expresion .) ]
+    CORRAL_CLOSE    shift and go to state 60
+    O               shift and go to state 33
 
 
 state 45
 
-    (14) expresion -> expresion MENOR_O_IGUAL expresion .
-    (11) expresion -> expresion . MAYOR expresion
-    (12) expresion -> expresion . MENOR expresion
-    (13) expresion -> expresion . MAYOR_O_IGUAL expresion
-    (14) expresion -> expresion . MENOR_O_IGUAL expresion
-    (16) expresion -> expresion . PLUS termino
-    (17) expresion -> expresion . MINUS termino
+    (11) condicional -> SIEMBRA expresion ENTONCES . instrucciones COSECHA
+    (12) condicional -> SIEMBRA expresion ENTONCES . instrucciones COSECHA instrucciones
+    (2) instrucciones -> . instruccion
+    (3) instrucciones -> . instrucciones instruccion
+    (4) instruccion -> . declaracion
+    (5) instruccion -> . mostrar
+    (6) instruccion -> . condicional
+    (7) instruccion -> . bucle_mientras
+    (8) instruccion -> . bucle_dia
+    (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
+    (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
-  ! shift/reduce conflict for MAYOR resolved as shift
-  ! shift/reduce conflict for MENOR resolved as shift
-  ! shift/reduce conflict for MAYOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for MENOR_O_IGUAL resolved as shift
-  ! shift/reduce conflict for PLUS resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-    CIERRE_FINAL    reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .)
-    ENTONCES        reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .)
-    INVERNADERO     reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .)
-    CORRAL_CLOSE    reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .)
-    MAYOR           shift and go to state 29
-    MENOR           shift and go to state 30
-    MAYOR_O_IGUAL   shift and go to state 31
-    MENOR_O_IGUAL   shift and go to state 32
-    PLUS            shift and go to state 33
-    MINUS           shift and go to state 34
+    SEMILLA         shift and go to state 10
+    MOSTRAR         shift and go to state 11
+    SIEMBRA         shift and go to state 12
+    MIENTRAS        shift and go to state 13
+    DIA             shift and go to state 14
 
-  ! MAYOR           [ reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .) ]
-  ! MENOR           [ reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .) ]
-  ! MAYOR_O_IGUAL   [ reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .) ]
-  ! MENOR_O_IGUAL   [ reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .) ]
-  ! PLUS            [ reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .) ]
-  ! MINUS           [ reduce using rule 14 (expresion -> expresion MENOR_O_IGUAL expresion .) ]
-
+    instrucciones                  shift and go to state 61
+    instruccion                    shift and go to state 4
+    declaracion                    shift and go to state 5
+    mostrar                        shift and go to state 6
+    condicional                    shift and go to state 7
+    bucle_mientras                 shift and go to state 8
+    bucle_dia                      shift and go to state 9
 
 state 46
 
-    (16) expresion -> expresion PLUS termino .
-    (19) termino -> termino . MUL factor
-    (20) termino -> termino . DIV factor
+    (13) bucle_mientras -> MIENTRAS expresion INVERNADERO . instrucciones CIERRE
+    (2) instrucciones -> . instruccion
+    (3) instrucciones -> . instrucciones instruccion
+    (4) instruccion -> . declaracion
+    (5) instruccion -> . mostrar
+    (6) instruccion -> . condicional
+    (7) instruccion -> . bucle_mientras
+    (8) instruccion -> . bucle_dia
+    (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
+    (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
-    CIERRE_FINAL    reduce using rule 16 (expresion -> expresion PLUS termino .)
-    MAYOR           reduce using rule 16 (expresion -> expresion PLUS termino .)
-    MENOR           reduce using rule 16 (expresion -> expresion PLUS termino .)
-    MAYOR_O_IGUAL   reduce using rule 16 (expresion -> expresion PLUS termino .)
-    MENOR_O_IGUAL   reduce using rule 16 (expresion -> expresion PLUS termino .)
-    PLUS            reduce using rule 16 (expresion -> expresion PLUS termino .)
-    MINUS           reduce using rule 16 (expresion -> expresion PLUS termino .)
-    ENTONCES        reduce using rule 16 (expresion -> expresion PLUS termino .)
-    INVERNADERO     reduce using rule 16 (expresion -> expresion PLUS termino .)
-    CORRAL_CLOSE    reduce using rule 16 (expresion -> expresion PLUS termino .)
-    MUL             shift and go to state 35
-    DIV             shift and go to state 36
+    SEMILLA         shift and go to state 10
+    MOSTRAR         shift and go to state 11
+    SIEMBRA         shift and go to state 12
+    MIENTRAS        shift and go to state 13
+    DIA             shift and go to state 14
 
+    instrucciones                  shift and go to state 62
+    instruccion                    shift and go to state 4
+    declaracion                    shift and go to state 5
+    mostrar                        shift and go to state 6
+    condicional                    shift and go to state 7
+    bucle_mientras                 shift and go to state 8
+    bucle_dia                      shift and go to state 9
 
 state 47
 
-    (17) expresion -> expresion MINUS termino .
-    (19) termino -> termino . MUL factor
-    (20) termino -> termino . DIV factor
+    (14) bucle_dia -> DIA ID UBICAR . NUM INVERNADERO instrucciones CIERRE
 
-    CIERRE_FINAL    reduce using rule 17 (expresion -> expresion MINUS termino .)
-    MAYOR           reduce using rule 17 (expresion -> expresion MINUS termino .)
-    MENOR           reduce using rule 17 (expresion -> expresion MINUS termino .)
-    MAYOR_O_IGUAL   reduce using rule 17 (expresion -> expresion MINUS termino .)
-    MENOR_O_IGUAL   reduce using rule 17 (expresion -> expresion MINUS termino .)
-    PLUS            reduce using rule 17 (expresion -> expresion MINUS termino .)
-    MINUS           reduce using rule 17 (expresion -> expresion MINUS termino .)
-    ENTONCES        reduce using rule 17 (expresion -> expresion MINUS termino .)
-    INVERNADERO     reduce using rule 17 (expresion -> expresion MINUS termino .)
-    CORRAL_CLOSE    reduce using rule 17 (expresion -> expresion MINUS termino .)
-    MUL             shift and go to state 35
-    DIV             shift and go to state 36
+    NUM             shift and go to state 63
 
 
 state 48
 
-    (19) termino -> termino MUL factor .
+    (9) declaracion -> SEMILLA ID UBICAR expresion . CIERRE_FINAL
+    (15) expresion -> expresion . O expresion_y
 
-    MUL             reduce using rule 19 (termino -> termino MUL factor .)
-    DIV             reduce using rule 19 (termino -> termino MUL factor .)
-    CIERRE_FINAL    reduce using rule 19 (termino -> termino MUL factor .)
-    MAYOR           reduce using rule 19 (termino -> termino MUL factor .)
-    MENOR           reduce using rule 19 (termino -> termino MUL factor .)
-    MAYOR_O_IGUAL   reduce using rule 19 (termino -> termino MUL factor .)
-    MENOR_O_IGUAL   reduce using rule 19 (termino -> termino MUL factor .)
-    PLUS            reduce using rule 19 (termino -> termino MUL factor .)
-    MINUS           reduce using rule 19 (termino -> termino MUL factor .)
-    ENTONCES        reduce using rule 19 (termino -> termino MUL factor .)
-    INVERNADERO     reduce using rule 19 (termino -> termino MUL factor .)
-    CORRAL_CLOSE    reduce using rule 19 (termino -> termino MUL factor .)
+    CIERRE_FINAL    shift and go to state 64
+    O               shift and go to state 33
 
 
 state 49
 
-    (20) termino -> termino DIV factor .
+    (15) expresion -> expresion O expresion_y .
+    (17) expresion_y -> expresion_y . Y expresion_comp
 
-    MUL             reduce using rule 20 (termino -> termino DIV factor .)
-    DIV             reduce using rule 20 (termino -> termino DIV factor .)
-    CIERRE_FINAL    reduce using rule 20 (termino -> termino DIV factor .)
-    MAYOR           reduce using rule 20 (termino -> termino DIV factor .)
-    MENOR           reduce using rule 20 (termino -> termino DIV factor .)
-    MAYOR_O_IGUAL   reduce using rule 20 (termino -> termino DIV factor .)
-    MENOR_O_IGUAL   reduce using rule 20 (termino -> termino DIV factor .)
-    PLUS            reduce using rule 20 (termino -> termino DIV factor .)
-    MINUS           reduce using rule 20 (termino -> termino DIV factor .)
-    ENTONCES        reduce using rule 20 (termino -> termino DIV factor .)
-    INVERNADERO     reduce using rule 20 (termino -> termino DIV factor .)
-    CORRAL_CLOSE    reduce using rule 20 (termino -> termino DIV factor .)
+    CIERRE_FINAL    reduce using rule 15 (expresion -> expresion O expresion_y .)
+    O               reduce using rule 15 (expresion -> expresion O expresion_y .)
+    ENTONCES        reduce using rule 15 (expresion -> expresion O expresion_y .)
+    INVERNADERO     reduce using rule 15 (expresion -> expresion O expresion_y .)
+    CORRAL_CLOSE    reduce using rule 15 (expresion -> expresion O expresion_y .)
+    Y               shift and go to state 34
 
 
 state 50
 
-    (23) factor -> CORRAL_OPEN expresion CORRAL_CLOSE .
+    (17) expresion_y -> expresion_y Y expresion_comp .
 
-    MUL             reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    DIV             reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    CIERRE_FINAL    reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    MAYOR           reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    MENOR           reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    MAYOR_O_IGUAL   reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    MENOR_O_IGUAL   reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    PLUS            reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    MINUS           reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    ENTONCES        reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    INVERNADERO     reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
-    CORRAL_CLOSE    reduce using rule 23 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    Y               reduce using rule 17 (expresion_y -> expresion_y Y expresion_comp .)
+    CIERRE_FINAL    reduce using rule 17 (expresion_y -> expresion_y Y expresion_comp .)
+    O               reduce using rule 17 (expresion_y -> expresion_y Y expresion_comp .)
+    ENTONCES        reduce using rule 17 (expresion_y -> expresion_y Y expresion_comp .)
+    INVERNADERO     reduce using rule 17 (expresion_y -> expresion_y Y expresion_comp .)
+    CORRAL_CLOSE    reduce using rule 17 (expresion_y -> expresion_y Y expresion_comp .)
 
 
 state 51
 
-    (24) condicional -> SIEMBRA expresion ENTONCES instrucciones . COSECHA
-    (25) condicional -> SIEMBRA expresion ENTONCES instrucciones . COSECHA instrucciones
-    (3) instrucciones -> instrucciones . instruccion
-    (4) instruccion -> . declaracion
-    (5) instruccion -> . mostrar
-    (6) instruccion -> . condicional
-    (7) instruccion -> . bucle_mientras
-    (8) instruccion -> . bucle_dia
-    (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
-    (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (19) expresion_comp -> expresion_arit MAYOR expresion_arit .
+    (25) expresion_arit -> expresion_arit . PLUS expresion_mult
+    (26) expresion_arit -> expresion_arit . MINUS expresion_mult
 
-    COSECHA         shift and go to state 55
-    SEMILLA         shift and go to state 10
-    MOSTRAR         shift and go to state 11
-    SIEMBRA         shift and go to state 12
-    MIENTRAS        shift and go to state 13
-    DIA             shift and go to state 14
+    Y               reduce using rule 19 (expresion_comp -> expresion_arit MAYOR expresion_arit .)
+    CIERRE_FINAL    reduce using rule 19 (expresion_comp -> expresion_arit MAYOR expresion_arit .)
+    O               reduce using rule 19 (expresion_comp -> expresion_arit MAYOR expresion_arit .)
+    ENTONCES        reduce using rule 19 (expresion_comp -> expresion_arit MAYOR expresion_arit .)
+    INVERNADERO     reduce using rule 19 (expresion_comp -> expresion_arit MAYOR expresion_arit .)
+    CORRAL_CLOSE    reduce using rule 19 (expresion_comp -> expresion_arit MAYOR expresion_arit .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
 
-    instruccion                    shift and go to state 16
-    declaracion                    shift and go to state 5
-    mostrar                        shift and go to state 6
-    condicional                    shift and go to state 7
-    bucle_mientras                 shift and go to state 8
-    bucle_dia                      shift and go to state 9
 
 state 52
 
-    (26) bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones . CIERRE
+    (20) expresion_comp -> expresion_arit MENOR expresion_arit .
+    (25) expresion_arit -> expresion_arit . PLUS expresion_mult
+    (26) expresion_arit -> expresion_arit . MINUS expresion_mult
+
+    Y               reduce using rule 20 (expresion_comp -> expresion_arit MENOR expresion_arit .)
+    CIERRE_FINAL    reduce using rule 20 (expresion_comp -> expresion_arit MENOR expresion_arit .)
+    O               reduce using rule 20 (expresion_comp -> expresion_arit MENOR expresion_arit .)
+    ENTONCES        reduce using rule 20 (expresion_comp -> expresion_arit MENOR expresion_arit .)
+    INVERNADERO     reduce using rule 20 (expresion_comp -> expresion_arit MENOR expresion_arit .)
+    CORRAL_CLOSE    reduce using rule 20 (expresion_comp -> expresion_arit MENOR expresion_arit .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+
+
+state 53
+
+    (21) expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit .
+    (25) expresion_arit -> expresion_arit . PLUS expresion_mult
+    (26) expresion_arit -> expresion_arit . MINUS expresion_mult
+
+    Y               reduce using rule 21 (expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit .)
+    CIERRE_FINAL    reduce using rule 21 (expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit .)
+    O               reduce using rule 21 (expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit .)
+    ENTONCES        reduce using rule 21 (expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit .)
+    INVERNADERO     reduce using rule 21 (expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit .)
+    CORRAL_CLOSE    reduce using rule 21 (expresion_comp -> expresion_arit MAYOR_O_IGUAL expresion_arit .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+
+
+state 54
+
+    (22) expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit .
+    (25) expresion_arit -> expresion_arit . PLUS expresion_mult
+    (26) expresion_arit -> expresion_arit . MINUS expresion_mult
+
+    Y               reduce using rule 22 (expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit .)
+    CIERRE_FINAL    reduce using rule 22 (expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit .)
+    O               reduce using rule 22 (expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit .)
+    ENTONCES        reduce using rule 22 (expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit .)
+    INVERNADERO     reduce using rule 22 (expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit .)
+    CORRAL_CLOSE    reduce using rule 22 (expresion_comp -> expresion_arit MENOR_O_IGUAL expresion_arit .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+
+
+state 55
+
+    (23) expresion_comp -> expresion_arit IGUAL expresion_arit .
+    (25) expresion_arit -> expresion_arit . PLUS expresion_mult
+    (26) expresion_arit -> expresion_arit . MINUS expresion_mult
+
+    Y               reduce using rule 23 (expresion_comp -> expresion_arit IGUAL expresion_arit .)
+    CIERRE_FINAL    reduce using rule 23 (expresion_comp -> expresion_arit IGUAL expresion_arit .)
+    O               reduce using rule 23 (expresion_comp -> expresion_arit IGUAL expresion_arit .)
+    ENTONCES        reduce using rule 23 (expresion_comp -> expresion_arit IGUAL expresion_arit .)
+    INVERNADERO     reduce using rule 23 (expresion_comp -> expresion_arit IGUAL expresion_arit .)
+    CORRAL_CLOSE    reduce using rule 23 (expresion_comp -> expresion_arit IGUAL expresion_arit .)
+    PLUS            shift and go to state 40
+    MINUS           shift and go to state 41
+
+
+state 56
+
+    (25) expresion_arit -> expresion_arit PLUS expresion_mult .
+    (28) expresion_mult -> expresion_mult . MUL factor
+    (29) expresion_mult -> expresion_mult . DIV factor
+
+    MAYOR           reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    MENOR           reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    MAYOR_O_IGUAL   reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    MENOR_O_IGUAL   reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    IGUAL           reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    PLUS            reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    MINUS           reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    Y               reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    CIERRE_FINAL    reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    O               reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    ENTONCES        reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    INVERNADERO     reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    CORRAL_CLOSE    reduce using rule 25 (expresion_arit -> expresion_arit PLUS expresion_mult .)
+    MUL             shift and go to state 42
+    DIV             shift and go to state 43
+
+
+state 57
+
+    (26) expresion_arit -> expresion_arit MINUS expresion_mult .
+    (28) expresion_mult -> expresion_mult . MUL factor
+    (29) expresion_mult -> expresion_mult . DIV factor
+
+    MAYOR           reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    MENOR           reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    MAYOR_O_IGUAL   reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    MENOR_O_IGUAL   reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    IGUAL           reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    PLUS            reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    MINUS           reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    Y               reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    CIERRE_FINAL    reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    O               reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    ENTONCES        reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    INVERNADERO     reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    CORRAL_CLOSE    reduce using rule 26 (expresion_arit -> expresion_arit MINUS expresion_mult .)
+    MUL             shift and go to state 42
+    DIV             shift and go to state 43
+
+
+state 58
+
+    (28) expresion_mult -> expresion_mult MUL factor .
+
+    MUL             reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    DIV             reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    MAYOR           reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    MENOR           reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    MAYOR_O_IGUAL   reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    MENOR_O_IGUAL   reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    IGUAL           reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    PLUS            reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    MINUS           reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    Y               reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    CIERRE_FINAL    reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    O               reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    ENTONCES        reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    INVERNADERO     reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+    CORRAL_CLOSE    reduce using rule 28 (expresion_mult -> expresion_mult MUL factor .)
+
+
+state 59
+
+    (29) expresion_mult -> expresion_mult DIV factor .
+
+    MUL             reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    DIV             reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    MAYOR           reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    MENOR           reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    MAYOR_O_IGUAL   reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    MENOR_O_IGUAL   reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    IGUAL           reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    PLUS            reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    MINUS           reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    Y               reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    CIERRE_FINAL    reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    O               reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    ENTONCES        reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    INVERNADERO     reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+    CORRAL_CLOSE    reduce using rule 29 (expresion_mult -> expresion_mult DIV factor .)
+
+
+state 60
+
+    (34) factor -> CORRAL_OPEN expresion CORRAL_CLOSE .
+
+    MUL             reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    DIV             reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    MAYOR           reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    MENOR           reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    MAYOR_O_IGUAL   reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    MENOR_O_IGUAL   reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    IGUAL           reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    PLUS            reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    MINUS           reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    Y               reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    CIERRE_FINAL    reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    O               reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    ENTONCES        reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    INVERNADERO     reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+    CORRAL_CLOSE    reduce using rule 34 (factor -> CORRAL_OPEN expresion CORRAL_CLOSE .)
+
+
+state 61
+
+    (11) condicional -> SIEMBRA expresion ENTONCES instrucciones . COSECHA
+    (12) condicional -> SIEMBRA expresion ENTONCES instrucciones . COSECHA instrucciones
     (3) instrucciones -> instrucciones . instruccion
     (4) instruccion -> . declaracion
     (5) instruccion -> . mostrar
@@ -1117,12 +1240,12 @@ state 52
     (8) instruccion -> . bucle_dia
     (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
     (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
-    CIERRE          shift and go to state 56
+    COSECHA         shift and go to state 65
     SEMILLA         shift and go to state 10
     MOSTRAR         shift and go to state 11
     SIEMBRA         shift and go to state 12
@@ -1136,14 +1259,44 @@ state 52
     bucle_mientras                 shift and go to state 8
     bucle_dia                      shift and go to state 9
 
-state 53
+state 62
 
-    (27) bucle_dia -> DIA ID UBICAR NUM . INVERNADERO instrucciones CIERRE
+    (13) bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones . CIERRE
+    (3) instrucciones -> instrucciones . instruccion
+    (4) instruccion -> . declaracion
+    (5) instruccion -> . mostrar
+    (6) instruccion -> . condicional
+    (7) instruccion -> . bucle_mientras
+    (8) instruccion -> . bucle_dia
+    (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
+    (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
-    INVERNADERO     shift and go to state 57
+    CIERRE          shift and go to state 66
+    SEMILLA         shift and go to state 10
+    MOSTRAR         shift and go to state 11
+    SIEMBRA         shift and go to state 12
+    MIENTRAS        shift and go to state 13
+    DIA             shift and go to state 14
+
+    instruccion                    shift and go to state 16
+    declaracion                    shift and go to state 5
+    mostrar                        shift and go to state 6
+    condicional                    shift and go to state 7
+    bucle_mientras                 shift and go to state 8
+    bucle_dia                      shift and go to state 9
+
+state 63
+
+    (14) bucle_dia -> DIA ID UBICAR NUM . INVERNADERO instrucciones CIERRE
+
+    INVERNADERO     shift and go to state 67
 
 
-state 54
+state 64
 
     (9) declaracion -> SEMILLA ID UBICAR expresion CIERRE_FINAL .
 
@@ -1156,10 +1309,10 @@ state 54
     COSECHA         reduce using rule 9 (declaracion -> SEMILLA ID UBICAR expresion CIERRE_FINAL .)
 
 
-state 55
+state 65
 
-    (24) condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .
-    (25) condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA . instrucciones
+    (11) condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .
+    (12) condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA . instrucciones
     (2) instrucciones -> . instruccion
     (3) instrucciones -> . instrucciones instruccion
     (4) instruccion -> . declaracion
@@ -1169,31 +1322,31 @@ state 55
     (8) instruccion -> . bucle_dia
     (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
     (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
   ! shift/reduce conflict for SEMILLA resolved as shift
   ! shift/reduce conflict for MOSTRAR resolved as shift
   ! shift/reduce conflict for SIEMBRA resolved as shift
   ! shift/reduce conflict for MIENTRAS resolved as shift
   ! shift/reduce conflict for DIA resolved as shift
-    CIERRE          reduce using rule 24 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .)
-    COSECHA         reduce using rule 24 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .)
+    CIERRE          reduce using rule 11 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .)
+    COSECHA         reduce using rule 11 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .)
     SEMILLA         shift and go to state 10
     MOSTRAR         shift and go to state 11
     SIEMBRA         shift and go to state 12
     MIENTRAS        shift and go to state 13
     DIA             shift and go to state 14
 
-  ! SEMILLA         [ reduce using rule 24 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
-  ! MOSTRAR         [ reduce using rule 24 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
-  ! SIEMBRA         [ reduce using rule 24 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
-  ! MIENTRAS        [ reduce using rule 24 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
-  ! DIA             [ reduce using rule 24 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
+  ! SEMILLA         [ reduce using rule 11 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
+  ! MOSTRAR         [ reduce using rule 11 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
+  ! SIEMBRA         [ reduce using rule 11 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
+  ! MIENTRAS        [ reduce using rule 11 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
+  ! DIA             [ reduce using rule 11 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA .) ]
 
-    instrucciones                  shift and go to state 58
+    instrucciones                  shift and go to state 68
     instruccion                    shift and go to state 4
     declaracion                    shift and go to state 5
     mostrar                        shift and go to state 6
@@ -1201,22 +1354,22 @@ state 55
     bucle_mientras                 shift and go to state 8
     bucle_dia                      shift and go to state 9
 
-state 56
+state 66
 
-    (26) bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .
+    (13) bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .
 
-    CIERRE          reduce using rule 26 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
-    SEMILLA         reduce using rule 26 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
-    MOSTRAR         reduce using rule 26 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
-    SIEMBRA         reduce using rule 26 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
-    MIENTRAS        reduce using rule 26 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
-    DIA             reduce using rule 26 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
-    COSECHA         reduce using rule 26 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
+    CIERRE          reduce using rule 13 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
+    SEMILLA         reduce using rule 13 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
+    MOSTRAR         reduce using rule 13 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
+    SIEMBRA         reduce using rule 13 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
+    MIENTRAS        reduce using rule 13 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
+    DIA             reduce using rule 13 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
+    COSECHA         reduce using rule 13 (bucle_mientras -> MIENTRAS expresion INVERNADERO instrucciones CIERRE .)
 
 
-state 57
+state 67
 
-    (27) bucle_dia -> DIA ID UBICAR NUM INVERNADERO . instrucciones CIERRE
+    (14) bucle_dia -> DIA ID UBICAR NUM INVERNADERO . instrucciones CIERRE
     (2) instrucciones -> . instruccion
     (3) instrucciones -> . instrucciones instruccion
     (4) instruccion -> . declaracion
@@ -1226,10 +1379,10 @@ state 57
     (8) instruccion -> . bucle_dia
     (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
     (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
     SEMILLA         shift and go to state 10
     MOSTRAR         shift and go to state 11
@@ -1237,7 +1390,7 @@ state 57
     MIENTRAS        shift and go to state 13
     DIA             shift and go to state 14
 
-    instrucciones                  shift and go to state 59
+    instrucciones                  shift and go to state 69
     instruccion                    shift and go to state 4
     declaracion                    shift and go to state 5
     mostrar                        shift and go to state 6
@@ -1245,9 +1398,9 @@ state 57
     bucle_mientras                 shift and go to state 8
     bucle_dia                      shift and go to state 9
 
-state 58
+state 68
 
-    (25) condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .
+    (12) condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .
     (3) instrucciones -> instrucciones . instruccion
     (4) instruccion -> . declaracion
     (5) instruccion -> . mostrar
@@ -1256,29 +1409,29 @@ state 58
     (8) instruccion -> . bucle_dia
     (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
     (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
   ! shift/reduce conflict for SEMILLA resolved as shift
   ! shift/reduce conflict for MOSTRAR resolved as shift
   ! shift/reduce conflict for SIEMBRA resolved as shift
   ! shift/reduce conflict for MIENTRAS resolved as shift
   ! shift/reduce conflict for DIA resolved as shift
-    CIERRE          reduce using rule 25 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .)
-    COSECHA         reduce using rule 25 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .)
+    CIERRE          reduce using rule 12 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .)
+    COSECHA         reduce using rule 12 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .)
     SEMILLA         shift and go to state 10
     MOSTRAR         shift and go to state 11
     SIEMBRA         shift and go to state 12
     MIENTRAS        shift and go to state 13
     DIA             shift and go to state 14
 
-  ! SEMILLA         [ reduce using rule 25 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
-  ! MOSTRAR         [ reduce using rule 25 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
-  ! SIEMBRA         [ reduce using rule 25 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
-  ! MIENTRAS        [ reduce using rule 25 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
-  ! DIA             [ reduce using rule 25 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
+  ! SEMILLA         [ reduce using rule 12 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
+  ! MOSTRAR         [ reduce using rule 12 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
+  ! SIEMBRA         [ reduce using rule 12 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
+  ! MIENTRAS        [ reduce using rule 12 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
+  ! DIA             [ reduce using rule 12 (condicional -> SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones .) ]
 
     instruccion                    shift and go to state 16
     declaracion                    shift and go to state 5
@@ -1287,9 +1440,9 @@ state 58
     bucle_mientras                 shift and go to state 8
     bucle_dia                      shift and go to state 9
 
-state 59
+state 69
 
-    (27) bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones . CIERRE
+    (14) bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones . CIERRE
     (3) instrucciones -> instrucciones . instruccion
     (4) instruccion -> . declaracion
     (5) instruccion -> . mostrar
@@ -1298,12 +1451,12 @@ state 59
     (8) instruccion -> . bucle_dia
     (9) declaracion -> . SEMILLA ID UBICAR expresion CIERRE_FINAL
     (10) mostrar -> . MOSTRAR expresion CIERRE_FINAL
-    (24) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
-    (25) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
-    (26) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
-    (27) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
+    (11) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA
+    (12) condicional -> . SIEMBRA expresion ENTONCES instrucciones COSECHA instrucciones
+    (13) bucle_mientras -> . MIENTRAS expresion INVERNADERO instrucciones CIERRE
+    (14) bucle_dia -> . DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE
 
-    CIERRE          shift and go to state 60
+    CIERRE          shift and go to state 70
     SEMILLA         shift and go to state 10
     MOSTRAR         shift and go to state 11
     SIEMBRA         shift and go to state 12
@@ -1317,52 +1470,28 @@ state 59
     bucle_mientras                 shift and go to state 8
     bucle_dia                      shift and go to state 9
 
-state 60
+state 70
 
-    (27) bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .
+    (14) bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .
 
-    CIERRE          reduce using rule 27 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
-    SEMILLA         reduce using rule 27 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
-    MOSTRAR         reduce using rule 27 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
-    SIEMBRA         reduce using rule 27 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
-    MIENTRAS        reduce using rule 27 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
-    DIA             reduce using rule 27 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
-    COSECHA         reduce using rule 27 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
+    CIERRE          reduce using rule 14 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
+    SEMILLA         reduce using rule 14 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
+    MOSTRAR         reduce using rule 14 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
+    SIEMBRA         reduce using rule 14 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
+    MIENTRAS        reduce using rule 14 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
+    DIA             reduce using rule 14 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
+    COSECHA         reduce using rule 14 (bucle_dia -> DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for MAYOR in state 42 resolved as shift
-WARNING: shift/reduce conflict for MENOR in state 42 resolved as shift
-WARNING: shift/reduce conflict for MAYOR_O_IGUAL in state 42 resolved as shift
-WARNING: shift/reduce conflict for MENOR_O_IGUAL in state 42 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 42 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 42 resolved as shift
-WARNING: shift/reduce conflict for MAYOR in state 43 resolved as shift
-WARNING: shift/reduce conflict for MENOR in state 43 resolved as shift
-WARNING: shift/reduce conflict for MAYOR_O_IGUAL in state 43 resolved as shift
-WARNING: shift/reduce conflict for MENOR_O_IGUAL in state 43 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 43 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 43 resolved as shift
-WARNING: shift/reduce conflict for MAYOR in state 44 resolved as shift
-WARNING: shift/reduce conflict for MENOR in state 44 resolved as shift
-WARNING: shift/reduce conflict for MAYOR_O_IGUAL in state 44 resolved as shift
-WARNING: shift/reduce conflict for MENOR_O_IGUAL in state 44 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 44 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 44 resolved as shift
-WARNING: shift/reduce conflict for MAYOR in state 45 resolved as shift
-WARNING: shift/reduce conflict for MENOR in state 45 resolved as shift
-WARNING: shift/reduce conflict for MAYOR_O_IGUAL in state 45 resolved as shift
-WARNING: shift/reduce conflict for MENOR_O_IGUAL in state 45 resolved as shift
-WARNING: shift/reduce conflict for PLUS in state 45 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 45 resolved as shift
-WARNING: shift/reduce conflict for SEMILLA in state 55 resolved as shift
-WARNING: shift/reduce conflict for MOSTRAR in state 55 resolved as shift
-WARNING: shift/reduce conflict for SIEMBRA in state 55 resolved as shift
-WARNING: shift/reduce conflict for MIENTRAS in state 55 resolved as shift
-WARNING: shift/reduce conflict for DIA in state 55 resolved as shift
-WARNING: shift/reduce conflict for SEMILLA in state 58 resolved as shift
-WARNING: shift/reduce conflict for MOSTRAR in state 58 resolved as shift
-WARNING: shift/reduce conflict for SIEMBRA in state 58 resolved as shift
-WARNING: shift/reduce conflict for MIENTRAS in state 58 resolved as shift
-WARNING: shift/reduce conflict for DIA in state 58 resolved as shift
+WARNING: shift/reduce conflict for SEMILLA in state 65 resolved as shift
+WARNING: shift/reduce conflict for MOSTRAR in state 65 resolved as shift
+WARNING: shift/reduce conflict for SIEMBRA in state 65 resolved as shift
+WARNING: shift/reduce conflict for MIENTRAS in state 65 resolved as shift
+WARNING: shift/reduce conflict for DIA in state 65 resolved as shift
+WARNING: shift/reduce conflict for SEMILLA in state 68 resolved as shift
+WARNING: shift/reduce conflict for MOSTRAR in state 68 resolved as shift
+WARNING: shift/reduce conflict for SIEMBRA in state 68 resolved as shift
+WARNING: shift/reduce conflict for MIENTRAS in state 68 resolved as shift
+WARNING: shift/reduce conflict for DIA in state 68 resolved as shift

@@ -1,32 +1,16 @@
-# Construir el lexer
 import ply.lex as lex
 
-
-# Tokens del lenguaje StardewScript
 tokens = (
-    'ID',             # Identificadores (nombres de variables)
-    'NUM',            # Números
-    'STRING',         # Cadenas de texto
-    'PLUS',           # +
-    'MINUS',          # -
-    'MUL',            # *
-    'DIV',            # /
-    'EQUAL',          # =
-    'UBICAR',         # :=
-    'CORRAL_OPEN',    # (
-    'CORRAL_CLOSE',   # )
-    'PUERTA_OPEN',    # {
-    'PUERTA_CLOSE',   # }
-    'CIERRE_FINAL',   # ;
-    'VALLA',          # ,
-    'NOT_EQUAL',      # !=
-    'IGUAL',          # == (comparación)
-    'Y',              # AND lógico
-    'O',              # OR lógico
-    'NO',             # NOT lógico
+    'ID', 'NUM', 'STRING',
+    'PLUS', 'MINUS', 'MUL', 'DIV',
+    'UBICAR', 'CORRAL_OPEN', 'CORRAL_CLOSE',
+    'CIERRE_FINAL',
+    'MAYOR', 'MENOR', 'MAYOR_O_IGUAL', 'MENOR_O_IGUAL', 'IGUAL',
+    'GRANJA', 'CIERRE', 'SEMILLA', 'PLANTAR', 'SIEMBRA', 'ENTONCES',
+    'COSECHA', 'MIENTRAS', 'DIA', 'MOSTRAR', 'RECETA', 'ENTREGAR',
+    'INVERNADERO', 'Y', 'O',
 )
 
-# Palabras reservadas
 reserved = {
     'GRANJA': 'GRANJA',
     'CIERRE': 'CIERRE',
@@ -41,43 +25,30 @@ reserved = {
     'RECETA': 'RECETA',
     'ENTREGAR': 'ENTREGAR',
     'INVERNADERO': 'INVERNADERO',
-    'Y': 'Y',
-    'O': 'O',
     'MAYOR': 'MAYOR',
     'MENOR': 'MENOR',
     'MAYOR_O_IGUAL': 'MAYOR_O_IGUAL',
     'MENOR_O_IGUAL': 'MENOR_O_IGUAL',
+    'IGUAL': 'IGUAL',
+    'Y': 'Y',
+    'O': 'O',
 }
 
-# Agregar palabras reservadas a tokens
-tokens = tokens + tuple(reserved.values())
-
-# Expresiones regulares para tokens
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_MUL = r'\*'
 t_DIV = r'\/'
-t_EQUAL = r'='
 t_UBICAR = r':='
 t_CORRAL_OPEN = r'\('
 t_CORRAL_CLOSE = r'\)'
-t_PUERTA_OPEN = r'\{'
-t_PUERTA_CLOSE = r'\}'
 t_CIERRE_FINAL = r';'
-t_VALLA = r','
-t_NOT_EQUAL = r'!='
-t_MENOR = r'<'
 t_MAYOR = r'>'
+t_MENOR = r'<'
+t_MAYOR_O_IGUAL = r'>='
+t_MENOR_O_IGUAL = r'<='
 t_IGUAL = r'=='
-t_MAYOR = r'>'
-t_MENOR = r'<'
-t_MAYOR_O_IGUAL = r'>='
-t_MENOR_O_IGUAL = r'<='
-t_MENOR_O_IGUAL = r'<='
-t_MAYOR_O_IGUAL = r'>='
 
 
-# Regex complejas que acepta 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z_0-9]*'
     t.type = reserved.get(t.value, 'ID')
@@ -96,21 +67,17 @@ def t_STRING(t):
     return t
 
 
-# Ignorar espacios en blanco
 t_ignore = ' \t'
 
 
-# Saltos de línea
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
 
-# Manejo de errores
 def t_error(t):
     print(f"Carácter ilegal '{t.value[0]}'")
     t.lexer.skip(1)
 
 
-# Construir el lexer
 lexer = lex.lex()

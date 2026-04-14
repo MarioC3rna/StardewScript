@@ -19,6 +19,14 @@
                 <h2>Editor de Código</h2>
                 <textarea id="codeEditor" placeholder="Escribe tu código StardewScript aquí..."></textarea>
                 <button id="compileBtn" class="compile-btn">COMPILAR CÓDIGO</button>
+                <div class="tests-panel">
+                    <p class="tests-title">Tests rápidos</p>
+                    <div class="tests-buttons">
+                        <button id="validTestsBtn" class="test-btn">CARGAR VÁLIDOS</button>
+                        <button id="invalidTestsBtn" class="test-btn test-btn-invalid">CARGAR NO VÁLIDOS</button>
+                    </div>
+                    <p id="currentTestLabel" class="current-test-label">Sin test seleccionado</p>
+                </div>
             </div>
 
             <div class="results-panel">

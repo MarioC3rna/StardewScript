@@ -4,8 +4,8 @@ from src.lexer import tokens  # noqa: F401
 precedence = (
     ('left', 'O'),
     ('left', 'Y'),
-    ('left', 'IGUAL'),
-    ('left', 'MAYOR', 'MENOR', 'MAYOR_O_IGUAL', 'MENOR_O_IGUAL'),
+    ('left', 'MAYOR', 'MENOR', 'MAYOR_O_IGUAL', 'MENOR_O_IGUAL',
+     'IGUAL'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MUL', 'DIV'),
 )
@@ -45,19 +45,73 @@ def p_mostrar(p):
     p[0] = ('mostrar', p[2])
 
 
-def p_expresion(p):
-    '''expresion : expresion PLUS expresion
-                 | expresion MINUS expresion
-                 | expresion MUL expresion
-                 | expresion DIV expresion
-                 | expresion MAYOR expresion
-                 | expresion MENOR expresion
-                 | expresion MAYOR_O_IGUAL expresion
-                 | expresion MENOR_O_IGUAL expresion
-                 | expresion IGUAL expresion
-                 | expresion Y expresion
-                 | expresion O expresion
-                 | factor'''
+def p_condicional_sin_else(p):
+    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA'''
+    p[0] = ('condicional', p[2], p[4], None)
+
+
+def p_condicional_con_else(p):
+    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA \
+                   instrucciones'''
+    p[0] = ('condicional', p[2], p[4], p[6])
+
+
+def p_bucle_mientras(p):
+    '''bucle_mientras : MIENTRAS expresion INVERNADERO \
+                      instrucciones CIERRE'''
+    p[0] = ('mientras', p[2], p[5])
+
+
+def p_bucle_dia(p):
+    '''bucle_dia : DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE'''
+    p[0] = ('dia', p[2], ('num', p[4]), p[6])
+
+
+def p_expresion_or(p):
+    '''expresion : expresion_y O expresion
+                 | expresion_y'''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = (p[2], p[1], p[3])
+
+
+def p_expresion_and(p):
+    '''expresion_y : expresion_comp Y expresion_y
+                   | expresion_comp'''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = (p[2], p[1], p[3])
+
+
+def p_expresion_comp(p):
+    '''expresion_comp : suma MAYOR suma
+                      | suma MENOR suma
+                      | suma MAYOR_O_IGUAL suma
+                      | suma MENOR_O_IGUAL suma
+                      | suma IGUAL suma
+                      | suma'''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = (p[2], p[1], p[3])
+
+
+def p_suma(p):
+    '''suma : producto PLUS suma
+            | producto MINUS suma
+            | producto'''
+    if len(p) == 2:
+        p[0] = p[1]
+    else:
+        p[0] = (p[2], p[1], p[3])
+
+
+def p_producto(p):
+    '''producto : factor MUL producto
+                | factor DIV producto
+                | factor'''
     if len(p) == 2:
         p[0] = p[1]
     else:
@@ -84,28 +138,6 @@ def p_factor_expr(p):
     p[0] = p[2]
 
 
-def p_condicional_sin_else(p):
-    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA'''
-    p[0] = ('condicional', p[2], p[4], None)
-
-
-def p_condicional_con_else(p):
-    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA \
-                   instrucciones'''
-    p[0] = ('condicional', p[2], p[4], p[7])
-
-
-def p_bucle_mientras(p):
-    '''bucle_mientras : MIENTRAS expresion INVERNADERO \
-                      instrucciones CIERRE'''
-    p[0] = ('mientras', p[2], p[5])
-
-
-def p_bucle_dia(p):
-    '''bucle_dia : DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE'''
-    p[0] = ('dia', p[2], ('num', p[4]), p[6])
-
-
 def p_error(p):
     if p:
         print(f"Error sintáctico en '{p.value}'")
@@ -114,3 +146,4 @@ def p_error(p):
 
 
 parser = yacc.yacc(debug=False, write_tables=False)
+
