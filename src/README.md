@@ -52,4 +52,3 @@ Cuando termines, dime **"Hecho"** y pasamos al MANUAL.md.---
 - Instrucciones de instalación y ejecución
 - Explicación de la estructura
 
-Cuando termines, dime **"Hecho"** y pasamos al MANUAL.md.
