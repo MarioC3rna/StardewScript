@@ -2,6 +2,9 @@ import ply.yacc as yacc
 from src.lexer import tokens  # noqa: F401
 
 precedence = (
+    ('left', 'O'),
+    ('left', 'Y'),
+    ('left', 'IGUAL'),
     ('left', 'MAYOR', 'MENOR', 'MAYOR_O_IGUAL', 'MENOR_O_IGUAL'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MUL', 'DIV'),
@@ -51,6 +54,9 @@ def p_expresion(p):
                  | expresion MENOR expresion
                  | expresion MAYOR_O_IGUAL expresion
                  | expresion MENOR_O_IGUAL expresion
+                 | expresion IGUAL expresion
+                 | expresion Y expresion
+                 | expresion O expresion
                  | factor'''
     if len(p) == 2:
         p[0] = p[1]
