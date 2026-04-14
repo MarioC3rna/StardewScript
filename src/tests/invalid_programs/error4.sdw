@@ -1,0 +1,4 @@
+GRANJA
+SEMILLA valor@ := 25;
+MOSTRAR valor@;
+CIERRE

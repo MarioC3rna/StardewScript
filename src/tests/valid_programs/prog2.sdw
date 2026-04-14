@@ -1,0 +1,6 @@
+GRANJA
+SEMILLA X := 10;
+SEMILLA y :=20;
+SEMILLA SUMA := x + y;
+MOSTRAR suma;
+CIERRE

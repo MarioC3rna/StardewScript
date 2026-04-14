@@ -1,0 +1,6 @@
+GRANJA
+SEMILLA base := 8;
+SEMILLA altura := 6;
+SEMILLA area := base * altura;
+MOSTRAR area;
+CIERRE

@@ -1,0 +1,6 @@
+GRANJA
+SEMILLA a := 5;
+SEMILLA b := 3;
+SEMILLA mult := a * b;
+MOSTRAR mult;
+CIERRE

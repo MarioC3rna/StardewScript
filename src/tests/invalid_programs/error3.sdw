@@ -1,0 +1,3 @@
+GRANJA
+SEMILLA a := 10;
+MOSTRAR a;

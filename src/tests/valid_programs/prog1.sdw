@@ -1,0 +1,5 @@
+GRANJA
+SEMILLA contador := 5;
+SEMILLA resultado := contador + 3;
+MOSTRAR resultado;
+CIERRE

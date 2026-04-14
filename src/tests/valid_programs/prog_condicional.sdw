@@ -1,0 +1,7 @@
+GRANJA
+SEMILLA dinero := 100;
+SIEMBRA dinero MAYOR 50 ENTONCES
+  MOSTRAR "Tengo mucho dinero";
+COSECHA
+  MOSTRAR "Necesito trabajar más";
+CIERRE

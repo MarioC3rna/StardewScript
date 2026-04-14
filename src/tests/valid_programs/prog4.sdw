@@ -1,0 +1,5 @@
+GRANJA
+SEMILLA num := 100;
+SEMILLA res := num - 25;
+MOSTRAR res;
+CIERRE
