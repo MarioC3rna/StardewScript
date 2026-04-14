@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StardewScript Compiler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌾 StardewScript Compiler</h1>
+            <p>Lenguaje de programación inspirado en StardewValley</p>
+        </header>
+
+        <div class="main-content">
+            <div class="editor-panel">
+                <h2>Editor de Código</h2>
+                <textarea id="codeEditor" placeholder="Escribe tu código StardewScript aquí..."></textarea>
+                <button id="compileBtn" class="compile-btn">COMPILAR CÓDIGO</button>
+            </div>
+
+            <div class="results-panel">
+                <div class="tokens-section">
+                    <h3>Tokens Reconocidos</h3>
+                    <div id="tokensList" class="tokens-list">
+                        <p class="placeholder">Compila tu código para ver los tokens</p>
+                    </div>
+                </div>
+
+                <div class="errors-section">
+                    <h3>Errores</h3>
+                    <div id="errorsList" class="errors-list">
+                        <p class="placeholder">✓ Sin errores</p>
+                    </div>
+                </div>
+
+                <div class="ast-section">
+                    <h3>Árbol de Derivación (AST)</h3>
+                    <div id="astContainer" class="ast-container">
+                        <p class="placeholder">El árbol aparecerá aquí</p>
+                    </div>
+                </div>
+
+                <div class="symbols-section">
+                    <h3>Tabla de Símbolos</h3>
+                    <div id="symbolsList" class="symbols-list">
+                        <p class="placeholder">Las variables aparecerán aquí</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

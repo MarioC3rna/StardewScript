@@ -8,7 +8,6 @@ precedence = (
 )
 
 
-# Reglas de gramática
 def p_programa(p):
     '''programa : GRANJA instrucciones CIERRE'''
     p[0] = ('programa', p[2])
@@ -79,20 +78,21 @@ def p_factor_expr(p):
     p[0] = p[2]
 
 
-def p_condicional(p):
+def p_condicional_sin_else(p):
     '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA'''
     p[0] = ('condicional', p[2], p[4], None)
 
 
-def p_condicional_else(p):
-    '''condicional : SIEMBRA expresion ENTONCES instrucciones
-                     COSECHA instrucciones'''
-    p[0] = ('condicional', p[2], p[4], p[6])
+def p_condicional_con_else(p):
+    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA \
+                   instrucciones'''
+    p[0] = ('condicional', p[2], p[4], p[7])
 
 
 def p_bucle_mientras(p):
-    '''bucle_mientras : MIENTRAS expresion INVERNADERO instrucciones CIERRE'''
-    p[0] = ('mientras', p[2], p[4])
+    '''bucle_mientras : MIENTRAS expresion INVERNADERO \
+                      instrucciones CIERRE'''
+    p[0] = ('mientras', p[2], p[5])
 
 
 def p_bucle_dia(p):
@@ -100,7 +100,6 @@ def p_bucle_dia(p):
     p[0] = ('dia', p[2], ('num', p[4]), p[6])
 
 
-# Error
 def p_error(p):
     if p:
         print(f"Error sintáctico en '{p.value}'")
@@ -108,5 +107,4 @@ def p_error(p):
         print("Error sintáctico en EOF")
 
 
-# Construir parser
-parser = yacc.yacc(debug=False)
+parser = yacc.yacc(debug=False, write_tables=False)
