@@ -6,7 +6,13 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background:
+        linear-gradient(rgba(69, 85, 48, 0.30), rgba(69, 85, 48, 0.30)),
+        url('/static/Fondo.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
     color: #fff;
     min-height: 100vh;
     padding: 20px;
@@ -30,9 +36,18 @@ header h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+.title-banner {
+    display: block;
+    width: min(1120px, 94vw);
+    max-height: 360px;
+    object-fit: contain;
+    margin: 0 auto 14px;
+    filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.35));
+}
+
 header p {
     font-size: 1.1em;
-    color: #b8d4ff;
+    color: #f7f3dc;
 }
 
 .main-content {
@@ -43,16 +58,16 @@ header p {
 
 .editor-panel,
 .results-panel {
-    background: rgba(20, 40, 80, 0.8);
+    background: rgba(98, 124, 84, 0.70);
     border-radius: 10px;
     padding: 20px;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(125, 213, 111, 0.3);
+    border: 1px solid rgba(220, 236, 183, 0.55);
 }
 
 .editor-panel h2,
 .results-panel h3 {
-    color: #7dd56f;
+    color: #f6ffcf;
     margin-bottom: 15px;
     font-size: 1.3em;
 }
@@ -60,9 +75,9 @@ header p {
 #codeEditor {
     width: 100%;
     height: 400px;
-    background: #0a1428;
-    color: #00ff00;
-    border: 1px solid #7dd56f;
+    background: rgba(33, 52, 34, 0.94);
+    color: #ecffd0;
+    border: 1px solid #bed88d;
     border-radius: 5px;
     padding: 15px;
     font-family: 'Courier New', monospace;
@@ -78,8 +93,8 @@ header p {
 .compile-btn {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #7dd56f 0%, #5ab547 100%);
-    color: #0a1428;
+    background: linear-gradient(135deg, #f4d67f 0%, #d9b963 100%);
+    color: #2f2a1f;
     border: none;
     border-radius: 5px;
     font-size: 1.1em;
@@ -90,7 +105,7 @@ header p {
 
 .compile-btn:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(125, 213, 111, 0.5);
+    box-shadow: 0 0 20px rgba(244, 214, 127, 0.45);
 }
 
 .compile-btn:active {
@@ -100,13 +115,13 @@ header p {
 .tests-panel {
     margin-top: 14px;
     padding: 12px;
-    background: rgba(10, 20, 40, 0.6);
-    border: 1px solid rgba(125, 213, 111, 0.25);
+    background: rgba(59, 79, 47, 0.56);
+    border: 1px solid rgba(215, 233, 175, 0.42);
     border-radius: 6px;
 }
 
 .tests-title {
-    color: #7dd56f;
+    color: #f6ffcf;
     font-weight: bold;
     margin-bottom: 10px;
     font-size: 0.95em;
@@ -120,17 +135,17 @@ header p {
 
 .test-btn {
     padding: 9px;
-    border: 1px solid #7dd56f;
+    border: 1px solid #d9e8b2;
     border-radius: 5px;
-    background: rgba(125, 213, 111, 0.16);
-    color: #d7ffd0;
+    background: rgba(210, 228, 170, 0.20);
+    color: #f5ffe0;
     cursor: pointer;
     font-size: 0.85em;
     font-weight: 600;
 }
 
 .test-btn:hover {
-    background: rgba(125, 213, 111, 0.28);
+    background: rgba(220, 238, 180, 0.33);
 }
 
 .test-btn-invalid {
@@ -146,7 +161,7 @@ header p {
 .current-test-label {
     margin-top: 10px;
     font-size: 0.84em;
-    color: #b8d4ff;
+    color: #f6f2dd;
     min-height: 18px;
 }
 
@@ -183,8 +198,8 @@ header p {
 .errors-section,
 .ast-section,
 .symbols-section {
-    background: rgba(10, 20, 40, 0.6);
-    border: 1px solid rgba(125, 213, 111, 0.2);
+    background: rgba(43, 64, 36, 0.58);
+    border: 1px solid rgba(211, 230, 173, 0.4);
     border-radius: 5px;
     padding: 15px;
     overflow-y: auto;
@@ -196,11 +211,11 @@ header p {
 .symbols-section h3 {
     font-size: 1.1em;
     margin-bottom: 10px;
-    color: #7dd56f;
+    color: #f6ffcf;
 }
 
 .placeholder {
-    color: #888;
+    color: #dce6ba;
     font-style: italic;
     padding: 20px;
     text-align: center;
@@ -216,8 +231,8 @@ header p {
 }
 
 .token-item {
-    background: rgba(125, 213, 111, 0.1);
-    border-left: 3px solid #7dd56f;
+    background: rgba(210, 228, 170, 0.14);
+    border-left: 3px solid #d9e8b2;
     padding: 8px;
     margin-bottom: 6px;
     border-radius: 3px;
@@ -226,8 +241,8 @@ header p {
 }
 
 .symbol-item {
-    background: rgba(100, 150, 255, 0.1);
-    border-left: 3px solid #6496ff;
+    background: rgba(244, 214, 127, 0.13);
+    border-left: 3px solid #f4d67f;
     padding: 8px;
     margin-bottom: 6px;
     border-radius: 3px;
@@ -235,7 +250,7 @@ header p {
 }
 
 .ast-container {
-    background: #0a1428;
+    background: rgba(27, 43, 24, 0.92);
     border-radius: 5px;
     padding: 15px;
     overflow-x: auto;
@@ -271,6 +286,11 @@ svg {
     .main-content {
         grid-template-columns: 1fr;
     }
+
+    .title-banner {
+        width: min(760px, 94vw);
+        max-height: 230px;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -279,14 +299,14 @@ svg {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(125, 213, 111, 0.1);
+    background: rgba(210, 228, 170, 0.16);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #7dd56f;
+    background: #d9c07b;
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #5ab547;
+    background: #c9ae63;
 }

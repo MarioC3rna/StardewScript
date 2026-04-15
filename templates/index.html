@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StardewScript Compiler</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='Pollo.png') }}?v=2">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='Pollo.png') }}?v=2">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='Pollo.png') }}?v=2">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🌾 StardewScript Compiler</h1>
+            <img
+                class="title-banner"
+                src="{{ url_for('static', filename='Cartel.png') }}"
+                alt="StardewScript Compiler"
+            >
             <p>Lenguaje de programación inspirado en StardewValley</p>
         </header>
 
@@ -61,6 +68,6 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
