@@ -25,6 +25,9 @@
             <div class="editor-panel">
                 <h2>Editor de Código</h2>
                 <textarea id="codeEditor" placeholder="Escribe tu código StardewScript aquí..."></textarea>
+            </div>
+
+            <div class="test-panel-container">
                 <button id="compileBtn" class="compile-btn">COMPILAR CÓDIGO</button>
                 <div class="tests-panel">
                     <p class="tests-title">Tests rápidos</p>
@@ -51,17 +54,19 @@
                     </div>
                 </div>
 
-                <div class="ast-section">
-                    <h3>Árbol de Derivación (AST)</h3>
-                    <div id="astContainer" class="ast-container">
-                        <p class="placeholder">El árbol aparecerá aquí</p>
-                    </div>
-                </div>
-
                 <div class="symbols-section">
                     <h3>Tabla de Símbolos</h3>
                     <div id="symbolsList" class="symbols-list">
                         <p class="placeholder">Las variables aparecerán aquí</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ast-section-wrapper">
+                <div class="ast-section">
+                    <h3>Árbol de Derivación (AST)</h3>
+                    <div id="astContainer" class="ast-container">
+                        <p class="placeholder">El árbol aparecerá aquí</p>
                     </div>
                 </div>
             </div>

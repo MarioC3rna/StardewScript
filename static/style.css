@@ -21,6 +21,9 @@ body {
 .container {
     max-width: 1400px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
@@ -52,17 +55,60 @@ header p {
 
 .main-content {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
+    grid-template-columns: 1fr 250px;
+    grid-template-rows: auto auto auto;
     gap: 20px;
+    flex: 1;
+    min-height: 0;
 }
 
-.editor-panel,
-.results-panel {
+.editor-panel {
+    grid-column: 1;
+    grid-row: 1 / 2;
     background: rgba(98, 124, 84, 0.70);
     border-radius: 10px;
     padding: 20px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(220, 236, 183, 0.55);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.test-panel-container {
+    grid-column: 2;
+    grid-row: 1 / 2;
+    background: rgba(98, 124, 84, 0.70);
+    border-radius: 10px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(220, 236, 183, 0.55);
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.results-panel {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    background: rgba(98, 124, 84, 0.70);
+    border-radius: 10px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(220, 236, 183, 0.55);
+    flex-shrink: 0;
+}
+
+.ast-section-wrapper {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    background: rgba(98, 124, 84, 0.70);
+    border-radius: 10px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(220, 236, 183, 0.55);
+    flex: 1;
+    min-height: 0;
 }
 
 .editor-panel h2,
@@ -74,7 +120,7 @@ header p {
 
 #codeEditor {
     width: 100%;
-    height: 400px;
+    flex: 1;
     background: rgba(33, 52, 34, 0.94);
     color: #ecffd0;
     border: 1px solid #bed88d;
@@ -82,8 +128,9 @@ header p {
     padding: 15px;
     font-family: 'Courier New', monospace;
     font-size: 14px;
-    resize: vertical;
+    resize: none;
     margin-bottom: 15px;
+    min-height: 250px;
 }
 
 #codeEditor::placeholder {
@@ -101,6 +148,7 @@ header p {
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 12px;
 }
 
 .compile-btn:hover {
@@ -113,11 +161,12 @@ header p {
 }
 
 .tests-panel {
-    margin-top: 14px;
-    padding: 12px;
-    background: rgba(59, 79, 47, 0.56);
-    border: 1px solid rgba(215, 233, 175, 0.42);
-    border-radius: 6px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .tests-title {
@@ -129,18 +178,18 @@ header p {
 
 .tests-buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    grid-template-columns: 1fr;
+    gap: 10px;
 }
 
 .test-btn {
-    padding: 9px;
+    padding: 10px;
     border: 1px solid #d9e8b2;
     border-radius: 5px;
     background: rgba(210, 228, 170, 0.20);
     color: #f5ffe0;
     cursor: pointer;
-    font-size: 0.85em;
+    font-size: 0.8em;
     font-weight: 600;
 }
 
@@ -167,31 +216,27 @@ header p {
 
 .results-panel {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
 }
 
 .tokens-section {
     grid-column: 1;
-    grid-row: 1;
 }
 
 .errors-section {
     grid-column: 2;
-    grid-row: 1;
+}
+
+.symbols-section {
+    grid-column: 3;
 }
 
 .ast-section {
     grid-column: 1 / -1;
-    grid-row: 2;
-    max-height: 500px;
-}
-
-.symbols-section {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    max-height: 200px;
+    flex: 1;
+    min-height: 400px;
+    overflow-y: auto;
 }
 
 .tokens-section,
@@ -253,6 +298,7 @@ header p {
     background: rgba(27, 43, 24, 0.92);
     border-radius: 5px;
     padding: 15px;
+    min-height: 100%;
     overflow-x: auto;
 }
 
