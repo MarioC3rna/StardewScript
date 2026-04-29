@@ -1,15 +1,48 @@
 class ErrorTable:
-    def __init__(self):
+    def __init__(self, source_code=None):
         self.errors = []
+        self.source_code = source_code
+        self.source_lines = source_code.split('\n') if source_code else []
+
+    def set_source_code(self, source_code):
+        """Establecer código fuente para contexto de errores"""
+        self.source_code = source_code
+        self.source_lines = source_code.split('\n') if source_code else []
 
     def add_error(self, error_type, line, column, description):
-        """Agregar error"""
-        self.errors.append({
+        """Agregar error con contexto"""
+        error_obj = {
             'type': error_type,
             'line': line,
             'column': column,
-            'description': description
-        })
+            'description': description,
+            'context': self._get_context(line, column)
+        }
+        self.errors.append(error_obj)
+
+    def get_column_from_lexpos(self, line_num, lexpos):
+        """Convertir una posición absoluta del lexer a columna dentro de la línea"""
+        if line_num <= 0 or not self.source_lines:
+            return max(1, lexpos + 1)
+
+        line_start = 0
+        for index in range(max(0, line_num - 1)):
+            line_start += len(self.source_lines[index]) + 1
+
+        return max(1, lexpos - line_start + 1)
+
+    def _get_context(self, line_num, column):
+        """Obtener línea de código y generar caret"""
+        if line_num <= 0 or line_num > len(self.source_lines):
+            return None
+        
+        code_line = self.source_lines[line_num - 1]
+        caret_line = ' ' * max(0, column - 1) + '^'
+        
+        return {
+            'code': code_line,
+            'caret': caret_line
+        }
 
     def add_parser_error(self, error_line, error_col, error_value):
         """Agregar error del parser"""

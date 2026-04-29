@@ -54,11 +54,23 @@ function renderErrors(errors) {
 
     ui.errorsList.innerHTML = errors
         .map(
-            (err) =>
-                `<div class="error-item">
-            <strong>${err.type}</strong> - Línea ${err.line}, Col ${err.column}<br>
-            ${err.description}
-        </div>`
+            (err) => {
+                let errorHTML = `<div class="error-item">
+                    <strong>[${err.type}]</strong> Línea ${err.line}, Columna ${err.column}<br>
+                    <span class="error-description">${err.description}</span>`;
+                
+                // Mostrar contexto si existe
+                if (err.context && err.context.code) {
+                    errorHTML += `<div class="error-context">
+                        <span class="error-context-label">Contexto</span>
+                        <code>${err.context.code}</code><br>
+                        <code class="error-caret">${err.context.caret}</code>
+                    </div>`;
+                }
+                
+                errorHTML += '</div>';
+                return errorHTML;
+            }
         )
         .join('');
 }
@@ -74,8 +86,43 @@ function renderSymbols(symbols) {
         .map(
             ([name, sym]) =>
                 `<div class="symbol-item">
-            <strong>${name}</strong>: ${sym.type} = ${sym.value || 'indefinido'}
+            <strong>${name}</strong>: ${sym.type} = ${formatSymbolValue(sym.value)}
         </div>`
         )
         .join('');
+}
+
+function formatSymbolValue(value) {
+    if (value === null || value === undefined) {
+        return 'indefinido';
+    }
+
+    if (typeof value !== 'object') {
+        return String(value);
+    }
+
+    if (!Array.isArray(value)) {
+        return JSON.stringify(value);
+    }
+
+    if (value[0] === 'num') {
+        return String(value[1]);
+    }
+
+    if (value[0] === 'id') {
+        return String(value[1]);
+    }
+
+    if (value[0] === 'string') {
+        return `"${value[1]}"`;
+    }
+
+    if (value.length === 3) {
+        const left = formatSymbolValue(value[1]);
+        const operator = String(value[0]);
+        const right = formatSymbolValue(value[2]);
+        return `${left} ${operator} ${right}`;
+    }
+
+    return value.map(formatSymbolValue).join(', ');
 }

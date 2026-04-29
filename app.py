@@ -19,13 +19,16 @@ def compile_code():
     data = request.json
     code = data.get('code', '')
 
-    error_table = ErrorTable()
+    error_table = ErrorTable(source_code=code)
     symbol_table = SymbolTable()
 
     try:
         # Configurar captura de errores léxicos y sintácticos
         set_lexer_error_table(error_table)
         set_parser_error_table(error_table)
+
+        # Reiniciar estado del lexer para que las líneas no se acumulen entre compilaciones
+        lexer.lineno = 1
         
         result = parser.parse(code, lexer=lexer)
 
@@ -110,11 +113,86 @@ def serialize_ast(node):
     return node
 
 
+def evaluate_expression(expr, symbol_table):
+    if isinstance(expr, tuple):
+        node_type = expr[0]
+
+        if node_type == 'num':
+            return expr[1]
+
+        if node_type == 'string':
+            return expr[1]
+
+        if node_type == 'id':
+            symbol = symbol_table.get_symbol(expr[1])
+            return symbol['value'] if symbol else None
+
+        if len(expr) == 3:
+            operator = expr[0]
+            left = evaluate_expression(expr[1], symbol_table)
+            right = evaluate_expression(expr[2], symbol_table)
+
+            if left is None or right is None:
+                return None
+
+            try:
+                if operator == '+':
+                    return left + right
+                if operator == '-':
+                    return left - right
+                if operator == '*':
+                    return left * right
+                if operator == '/':
+                    return left / right
+                if operator == '>':
+                    return left > right
+                if operator == '<':
+                    return left < right
+                if operator == '>=':
+                    return left >= right
+                if operator == '<=':
+                    return left <= right
+                if operator == '==':
+                    return left == right
+                if operator == 'Y':
+                    return bool(left) and bool(right)
+                if operator == 'O':
+                    return bool(left) or bool(right)
+            except Exception:
+                return None
+
+    return None
+
+
+def infer_symbol_type(value, expression):
+    if isinstance(value, bool):
+        return 'booleano'
+    if isinstance(value, (int, float)):
+        return 'numero'
+    if isinstance(value, str):
+        return 'texto'
+
+    if isinstance(expression, tuple) and len(expression) > 0:
+        if expression[0] == 'string':
+            return 'texto'
+        return 'numero'
+
+    return 'numero'
+
+
 def extract_symbols(ast, symbol_table):
     if isinstance(ast, tuple):
         if ast[0] == 'declaracion':
             var_name = ast[1]
-            value = ast[2]
+            expression = ast[2]
+            value = evaluate_expression(expression, symbol_table)
+            var_type = infer_symbol_type(value, expression)
+            symbol_table.add_symbol(var_name, var_type, value)
+
+        elif ast[0] == 'dia':
+            var_name = ast[1]
+            expression = ast[2]
+            value = evaluate_expression(expression, symbol_table)
             symbol_table.add_symbol(var_name, 'numero', value)
 
         for item in ast[1:]:

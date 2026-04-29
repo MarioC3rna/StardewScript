@@ -64,6 +64,22 @@ def p_condicional_con_sino(p):
     p[0] = ('condicional', p[2], p[4], p[7])
 
 
+def p_condicional_con_sino_si(p):
+    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA SINO SI \
+                   expresion ENTONCES instrucciones COSECHA'''
+    # Crea un condicional anidado: si la primera condición es falsa, evalúa la segunda
+    inner_cond = ('condicional', p[8], p[10], None)
+    p[0] = ('condicional', p[2], p[4], [inner_cond])
+
+
+def p_condicional_con_sino_si_else(p):
+    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA SINO SI \
+                   expresion ENTONCES instrucciones COSECHA SINO instrucciones'''
+    # SINO SI con SINO final
+    inner_cond = ('condicional', p[8], p[10], p[13])
+    p[0] = ('condicional', p[2], p[4], [inner_cond])
+
+
 def p_bucle_mientras(p):
     '''bucle_mientras : MIENTRAS expresion INVERNADERO \
                       instrucciones CIERRE'''
@@ -149,7 +165,8 @@ def p_factor_expr(p):
 def p_error(p):
     if p:
         if _error_table:
-            _error_table.add_parser_error(p.lineno, p.lexpos, p.value)
+            column = _error_table.get_column_from_lexpos(p.lineno, p.lexpos)
+            _error_table.add_parser_error(p.lineno, column, p.value)
         print(f"Error sintáctico en '{p.value}'")
     else:
         if _error_table:

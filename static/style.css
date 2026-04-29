@@ -269,10 +269,52 @@ header p {
 .error-item {
     background: rgba(255, 68, 68, 0.2);
     border-left: 3px solid #ff4444;
-    padding: 10px;
+    padding: 14px;
     margin-bottom: 8px;
     border-radius: 3px;
-    font-size: 0.9em;
+    font-size: 0.95em;
+    line-height: 1.45;
+}
+
+.error-description {
+    display: block;
+    color: #ffd7d7;
+    margin-top: 5px;
+}
+
+.error-context {
+    background: rgba(20, 20, 20, 0.5);
+    border: 1px solid #ff6666;
+    border-radius: 3px;
+    padding: 14px 16px;
+    margin-top: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.98em;
+    overflow-x: auto;
+    min-height: 84px;
+}
+
+.error-context-label {
+    display: block;
+    color: #ffdbdb;
+    font-size: 0.8em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.error-context code {
+    color: #ecffd0;
+    display: block;
+    white-space: pre;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.error-caret {
+    color: #ff9999 !important;
+    font-weight: bold;
 }
 
 .token-item {

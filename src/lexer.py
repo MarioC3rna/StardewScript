@@ -16,7 +16,7 @@ tokens = (
     'MAYOR', 'MENOR', 'MAYOR_O_IGUAL', 'MENOR_O_IGUAL', 'IGUAL',
     'GRANJA', 'CIERRE', 'SEMILLA', 'PLANTAR', 'SIEMBRA', 'ENTONCES',
     'COSECHA', 'MIENTRAS', 'DIA', 'MOSTRAR', 'RECETA', 'ENTREGAR',
-    'INVERNADERO', 'Y', 'O', 'SINO',
+    'INVERNADERO', 'Y', 'O', 'SINO', 'SI',
 )
 
 reserved = {
@@ -41,6 +41,7 @@ reserved = {
     'Y': 'Y',
     'O': 'O',
     'SINO': 'SINO',
+    'SI': 'SI',
 }
 
 t_PLUS = r'\+'
@@ -86,7 +87,8 @@ def t_newline(t):
 
 def t_error(t):
     if _error_table:
-        _error_table.add_error('Léxico', t.lexer.lineno, t.lexpos, f"Carácter ilegal '{t.value[0]}'")
+        column = _error_table.get_column_from_lexpos(t.lexer.lineno, t.lexpos)
+        _error_table.add_error('Léxico', t.lexer.lineno, column, f"Carácter ilegal '{t.value[0]}'")
     print(f"Carácter ilegal '{t.value[0]}' en línea {t.lexer.lineno}")
     t.lexer.skip(1)
 
