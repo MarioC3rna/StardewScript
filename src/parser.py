@@ -86,8 +86,8 @@ def p_bucle_mientras(p):
     p[0] = ('mientras', p[2], p[5])
 
 
-def p_bucle_dia(p):
-    '''bucle_dia : DIA ID UBICAR NUM INVERNADERO instrucciones CIERRE'''
+def p_bucle_dia_sin_cierre_extra(p):
+    '''bucle_dia : DIA ID UBICAR NUM INVERNADERO instrucciones'''
     p[0] = ('dia', p[2], ('num', p[4]), p[6])
 
 
