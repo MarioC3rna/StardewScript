@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 from pathlib import Path
-from src.lexer import lexer
-from src.parser import parser
+from src.lexer import lexer, set_error_table as set_lexer_error_table
+from src.parser import parser, set_error_table as set_parser_error_table
 from src.error_table import ErrorTable
 from src.symbol_table import SymbolTable
+from src.validator import SemanticValidator
 
 app = Flask(__name__)
 
@@ -22,6 +23,10 @@ def compile_code():
     symbol_table = SymbolTable()
 
     try:
+        # Configurar captura de errores léxicos y sintácticos
+        set_lexer_error_table(error_table)
+        set_parser_error_table(error_table)
+        
         result = parser.parse(code, lexer=lexer)
 
         lexer.input(code)
@@ -48,10 +53,14 @@ def compile_code():
                 'symbols': {}
             })
 
+        # Validación semántica
+        validator = SemanticValidator(error_table)
+        validator.validate(result)
+
         extract_symbols(result, symbol_table)
 
         return jsonify({
-            'success': True,
+            'success': len(error_table.errors) == 0,
             'ast': serialize_ast(result),
             'tokens': tokens_list,
             'errors': error_table.errors,

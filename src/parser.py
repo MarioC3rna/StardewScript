@@ -1,6 +1,14 @@
 import ply.yacc as yacc
 from src.lexer import tokens  # noqa: F401
 
+# Variable global para registrar errores
+_error_table = None
+
+def set_error_table(error_table):
+    """Establecer tabla de errores para registrar errores del parser"""
+    global _error_table
+    _error_table = error_table
+
 precedence = (
     ('left', 'O'),
     ('left', 'Y'),
@@ -50,10 +58,10 @@ def p_condicional_sin_else(p):
     p[0] = ('condicional', p[2], p[4], None)
 
 
-def p_condicional_con_else(p):
-    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA \
+def p_condicional_con_sino(p):
+    '''condicional : SIEMBRA expresion ENTONCES instrucciones COSECHA SINO \
                    instrucciones'''
-    p[0] = ('condicional', p[2], p[4], p[6])
+    p[0] = ('condicional', p[2], p[4], p[7])
 
 
 def p_bucle_mientras(p):
@@ -140,8 +148,12 @@ def p_factor_expr(p):
 
 def p_error(p):
     if p:
+        if _error_table:
+            _error_table.add_parser_error(p.lineno, p.lexpos, p.value)
         print(f"Error sintáctico en '{p.value}'")
     else:
+        if _error_table:
+            _error_table.add_error('Sintáctico', 0, 0, 'Error sintáctico en EOF')
         print("Error sintáctico en EOF")
 
 

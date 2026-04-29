@@ -11,6 +11,10 @@ class ErrorTable:
             'description': description
         })
 
+    def add_parser_error(self, error_line, error_col, error_value):
+        """Agregar error del parser"""
+        self.add_error('Sintáctico', error_line, error_col, f"Token inesperado: {error_value}")
+
     def has_errors(self):
         """¿Hay errores?"""
         return len(self.errors) > 0

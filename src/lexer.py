@@ -1,5 +1,13 @@
 import ply.lex as lex
 
+# Variable global para registrar errores
+_error_table = None
+
+def set_error_table(error_table):
+    """Establecer tabla de errores para registrar errores del lexer"""
+    global _error_table
+    _error_table = error_table
+
 tokens = (
     'ID', 'NUM', 'STRING',
     'PLUS', 'MINUS', 'MUL', 'DIV',
@@ -8,7 +16,7 @@ tokens = (
     'MAYOR', 'MENOR', 'MAYOR_O_IGUAL', 'MENOR_O_IGUAL', 'IGUAL',
     'GRANJA', 'CIERRE', 'SEMILLA', 'PLANTAR', 'SIEMBRA', 'ENTONCES',
     'COSECHA', 'MIENTRAS', 'DIA', 'MOSTRAR', 'RECETA', 'ENTREGAR',
-    'INVERNADERO', 'Y', 'O',
+    'INVERNADERO', 'Y', 'O', 'SINO',
 )
 
 reserved = {
@@ -32,6 +40,7 @@ reserved = {
     'IGUAL': 'IGUAL',
     'Y': 'Y',
     'O': 'O',
+    'SINO': 'SINO',
 }
 
 t_PLUS = r'\+'
@@ -76,7 +85,9 @@ def t_newline(t):
 
 
 def t_error(t):
-    print(f"Carácter ilegal '{t.value[0]}'")
+    if _error_table:
+        _error_table.add_error('Léxico', t.lexer.lineno, t.lexpos, f"Carácter ilegal '{t.value[0]}'")
+    print(f"Carácter ilegal '{t.value[0]}' en línea {t.lexer.lineno}")
     t.lexer.skip(1)
 
 
