@@ -18,7 +18,8 @@ precedence = (
     ('left', 'MUL', 'DIV'),
 )
 
-
+ # aqui se estructura el arbol 
+ 
 def p_programa(p):
     '''programa : GRANJA instrucciones CIERRE'''
     p[0] = ('programa', p[2])

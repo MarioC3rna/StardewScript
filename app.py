@@ -112,6 +112,7 @@ def serialize_ast(node):
         return [serialize_ast(item) for item in node]
     return node
 
+#expresiones regulares	
 
 def evaluate_expression(expr, symbol_table):
     if isinstance(expr, tuple):

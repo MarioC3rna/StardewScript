@@ -56,6 +56,7 @@ function drawAST(data) {
     drawNodes(group, nodes);
 }
 
+//aqui se dibuja  el arbol 
 function drawLinks(group, links) {
     group.selectAll('line')
         .data(links)
